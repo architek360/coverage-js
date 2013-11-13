@@ -147,10 +147,48 @@ function Coverage(json) {
     return(this.json['plan']['financials']);
   }
 
+  // Check if the plan has any coinsurance information
+  this.hasPlanCoinsurance = function() {
+    if (!this.hasPlanFinancials()) return false;
+    var coinsurance = this.json['plan']['financials']['coinsurance']['percents'];
+    return(coinsurance['in_network'].length > 0 || coinsurance['out_network'].length > 0);
+  }
+
+  // Return coinsurance for the plan
+  this.getPlanCoinsurance = function() {
+    if (!this.hasPlanCoinsurance()) return null;
+    return(this.json['plan']['financials']['coinsurance']);
+  }
+
+  // Check if the plan has any copayment information
+  this.hasPlanCopayment = function() {
+    if (!this.hasPlanFinancials()) return false;
+    var copayment = this.json['plan']['financials']['copayment']['amounts'];
+    return(copayment['in_network'].length > 0 || copayment['out_network'].length > 0);
+  }
+
+  // Return copayment for the plan
+  this.getPlanCopayment = function() {
+    if (!this.hasPlanCopayment()) return null;
+    return(this.json['plan']['financials']['copayment']);
+  }
+
+  // Check if the plan has any disclaimer information
+  this.hasPlanDisclaimer = function() {
+    if (!this.hasPlanFinancials()) return false;
+    return(this.json['plan']['financials']['disclaimer'] && this.json['plan']['financials']['disclaimer'].length > 0);
+  }
+
+  // Return disclaimer information for the plan
+  this.getPlanDisclaimer = function() {
+    if (!this.hasPlanDisclaimer()) return null;
+    return(this.json['plan']['financials']['disclaimer']);
+  }
+
   // Check if the plan has additional insurance policies
   this.hasAdditionalInsurancePolicies = function() {
     if (!this.hasPlan()) return false;
-    return(this.json['plan']['additional_insurance_policies']);
+    return(this.json['plan']['additional_insurance_policies'] && this.json['plan']['additional_insurance_policies'].length > 0);
   }
 
   // Return the additional insurance policies for the plan
@@ -166,7 +204,7 @@ function Coverage(json) {
 
   // Return the services for the coverage answer
   this.getServices = function() {
-    if (!this.hasAdditionalInsurancePolicies()) return null;
+    if (!this.hasServices()) return null;
     return(this.json['services']);
   }
 
@@ -451,30 +489,30 @@ function CoveragePlugin(coverage, coverageSection) {
 
   // Add coinsurance
   this.addCoinsurance = function() {
-    if (that.coverage.hasPlanFinancials()) {
+    if (that.coverage.hasPlanCoinsurance()) {
       that.coverageSection.append(
         that.buildPanelUI('Coinsurance',
-          that.buildCoinsurance(that.coverage.getPlanFinancials()['coinsurance']))
+          that.buildCoinsurance(that.coverage.getPlanCoinsurance()))
       );
     }
   }
 
   // Add copayment
   this.addCopayment = function() {
-    if (that.coverage.hasPlanFinancials()) {
+    if (that.coverage.hasPlanCopayment()) {
       that.coverageSection.append(
         that.buildPanelUI('Copayment',
-          that.buildCopayment(that.coverage.getPlanFinancials()['copayment']))
+          that.buildCopayment(that.coverage.getPlanCopayment()))
       );
     }
   }
 
   // Add disclaimer
   this.addDisclaimer = function() {
-    if (that.coverage.hasPlanFinancials()) {
+    if (that.coverage.hasPlanDisclaimer()) {
       that.coverageSection.append(
         that.buildPanelUI('Disclaimer',
-          that.buildDisclaimer(that.coverage.getPlanFinancials()['disclaimer']))
+          that.buildDisclaimer(that.coverage.getPlanDisclaimer()))
       );
     }
   }
