@@ -1,0 +1,174 @@
+.hidden {
+  display: none;
+}
+
+.coverage-section {
+  width: 95%;
+  min-width: 920px;
+  margin: 0 auto;
+}
+
+.form-coverage {
+  padding-top: 50px;
+}
+
+.panel {
+  margin-bottom: 0;
+  border-bottom: none;
+  clear: both;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.right-grey-border {
+  border-right: 1px solid #ddd;
+}
+
+.left-grey-border {
+  border-left: 1px solid #ddd;
+}
+
+.no-bottom-border {
+  border-bottom: none !important;
+}
+
+
+.subscriber-section {
+  width: 36%;
+  float: left;
+  margin-bottom: 50px;
+  /*background: #fafafa;*/
+  display: inline-block;
+}
+
+
+.subscriber-section .panel {
+  width: 100%;
+  display: block;
+}
+
+
+.insurance-section {
+  width: 62%;
+  float: right;
+  margin-bottom: 50px;
+  display: inline-block;
+}
+
+.insurance-section .panel, .plan-section .panel {
+  width: 100%;
+  border-width: 0 1px 0 1px;
+  border-radius: 0;
+}
+
+.insurance-section .panel:first-child {
+  border-radius: 3px 3px 0 0;
+  border-width: 1px 1px 0 1px;
+
+}
+
+.insurance-section .table {
+  margin-bottom: 8px;
+}
+
+.coverage-status-section {
+  width: 40%;
+  clear: both;
+  float: left;
+  font-size: 30px;
+}
+
+.coverage-status-section h1 {
+  width: 53%;
+  padding-bottom: 20px;
+  border-bottom: 5px solid #eee;
+}
+
+.plan .panel-heading {
+  display: none;
+}
+
+.panel-body {
+  padding: 0;
+}
+
+
+.plan-maximums-and-deductibles {
+  clear: both;
+}
+
+.plan-maximums-and-deductibles h4, .plan-deductible h4, .plan-coinsurance h4 {
+  font-weight: bold;
+  font-size: 20px
+}
+
+.plan-maximums-and-deductibles .panel-heading, .plan-deductible .panel-heading, .plan-coinsurance .panel-heading {
+  margin-bottom: -60px;
+}
+
+.plan-maximums-and-deductibles thead tr:first-child, .plan-deductible thead tr:first-child, .plan-coinsurance thead tr:first-child  {
+  font-size: 20px;
+}
+
+.plan-maximums-and-deductibles thead, .plan-deductible thead, .plan-coinsurance thead {
+  border-width: 0;
+}
+
+.plan-maximums-and-deductibles .table tr:first-child th, .plan-deductible .table tr:first-child th, .plan-coinsurance .table tr:first-child th {
+  padding: 17px 8px;
+  border: 0;
+}
+
+.plan-maximums-and-deductibles .table tr th, .plan-deductible .table tr th, .plan-coinsurance .table tr th {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.plan-maximums-and-deductibles .table td:nth-child(2n+4), .plan-deductible .table td:nth-child(2n+4), .plan-coinsurance .table td:nth-child(2n+4) {
+  background: #fcf8e3;
+}
+
+.plan-maximums-and-deductibles .table td:nth-child(2n+4):hover, .plan-deductible .table td:nth-child(2n+4):hover, .plan-coinsurance .table td:nth-child(2n+4):hover {
+  background: #faf2cc;
+}
+
+.table tr th:first-child,
+.table tr td:first-child  {
+  padding-left: 15px;
+}
+
+.table thead>tr>th {
+  border-bottom: 1px solid #dddddd;
+}
+
+.additional-insurance-section {
+  margin-top: 50px;
+
+}
+
+/* Bootstrap overrides */
+
+.panel-default > .panel-heading {
+  border: none;
+}
+
+.healthbenefitplancoverage {
+  width: 100%;
+  clear: both;
+}
+
+.services-div > div {
+  width: 50%;
+  clear: none;
+}
+
+.services-div > div:first-child {
+  float: left;
+}
+
+.services-div > div:last-child {
+  float: right;
+
+}

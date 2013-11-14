@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Eligible Coverage Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/cupertino/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" media="screen">
+  <link href="css/coverage.css" rel="stylesheet" media="screen">
+
+  <script src="js/lib/jquery-2.0.3.min.js"></script>
+  <script src="js/lib/jquery-ui-1.10.3.custom.min.js"></script>
+
+  <script src="js/eligible.js"></script>
+  <script src="js/smaple_2.js"></script>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="js/lib/html5shiv.js"></script>
+  <script src="js/lib/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+<div class="container">
+
+  <form role="form" class="form-horizontal form-coverage">
+
+    <div class="form-group">
+      <label for="member_dob" class="col-lg-2 control-label">Test?</label>
+
+      <div class="col-lg-10">
+        <input type="radio" name="test" id="test_yes" value="true" checked="checked"> Yes
+        <input type="radio" name="test" id="test_no" value="false"> No
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="api_key" class="col-lg-2 control-label">API Key</label>
+
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="api_key">
+      </div>
+    </div>
+
+    <div class="form-group test-param">
+      <label for="test_member_id" class="col-lg-2 control-label">Test Member ID</label>
+
+      <div class="col-lg-10">
+        <select class="form-control" id="test_member_id">
+          <option value="U44441234">U44441234 - enrollment required</option>
+          <option value="U12121212">U12121212 - insured not found</option>
+          <option value="X22222222" selected="selected">X22222222 - dependent</option>
+          <option value="W11111111">W11111111 - inactive plan</option>
+          <option value="A22222222">A22222222 - active, deductible, stop loss, etc plan</option>
+          <option value="TRE1111110">TRE1111110 - diagnostic lab (STC 5) coinsurance and other financial information
+          </option>
+          <option value="W99999999">W99999999 - Member has a health spending account</option>
+          <option value="T434343">T434343 - Secondary insurance example (with Medicare A &amp; B information)</option>
+          <option value="44444444A">44444444A - Medicare is secondary, other insurance company is primary</option>
+          <option value="333333334">333333334 - Medicare Advantage manages member's benefits</option>
+          <option value="W88888888">W88888888 - Member is using hospice</option>
+          <option value="TRE1111110">TRE1111110 - Diagnostic Lab</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group real-param" style="display: none;">
+      <label for="payer_id" class="col-lg-2 control-label">Payer ID</label>
+
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="payer_id">
+      </div>
+    </div>
+
+    <fieldset class="real-param" style="display: none;">
+      <legend>Service Provider</legend>
+
+      <div class="form-group real-param">
+        <label for="provider_npi" class="col-lg-2 control-label">NPI</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="provider_npi">
+        </div>
+      </div>
+
+      <div class="form-group real-param">
+        <label for="provider_last_name" class="col-lg-2 control-label">Last Name</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="provider_last_name">
+        </div>
+      </div>
+
+      <div class="form-group real-param">
+        <label for="provider_first_name" class="col-lg-2 control-label">First Name</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="provider_first_name">
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset class="real-param" style="display: none;">
+      <legend>Subscriber</legend>
+
+      <div class="form-group real-param">
+        <label for="member_id" class="col-lg-2 control-label">ID</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="member_id">
+        </div>
+      </div>
+
+      <div class="form-group real-param">
+        <label for="member_last_name" class="col-lg-2 control-label">Last Name</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="member_last_name">
+        </div>
+      </div>
+
+      <div class="form-group real-param">
+        <label for="member_first_name" class="col-lg-2 control-label">First Name</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="member_first_name">
+        </div>
+      </div>
+
+      <div class="form-group real-param">
+        <label for="member_dob" class="col-lg-2 control-label">DOB</label>
+
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="member_dob">
+        </div>
+      </div>
+
+    </fieldset>
+
+    <div class="form-group">
+      <div class="col-lg-offset-2 col-lg-10">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+
+</body>
+</html>

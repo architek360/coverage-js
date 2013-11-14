@@ -63,6 +63,7 @@ function EligibleRequest(endpoint, successCallback, errorCallback, debug) {
 
 // This is a generic object used by different plugins for drawing the coverage answer
 function Coverage(json) {
+  var that = this;
   this.json = json;
 
   // Check if the coverage answer has any errors on it
@@ -136,74 +137,74 @@ function Coverage(json) {
   }
 
   // Check if the plan has financials information
-  this.hasPlanFinancials = function() {
+  this.hasPlanFinancials = function () {
     if (!this.hasPlan()) return false;
     return(this.json['plan']['financials'] && this.json['plan']['financials']['deductible']);
   }
 
   // Return the financials for the plan
-  this.getPlanFinancials = function() {
+  this.getPlanFinancials = function () {
     if (!this.hasPlanFinancials()) return null;
     return(this.json['plan']['financials']);
   }
 
   // Check if the plan has any coinsurance information
-  this.hasPlanCoinsurance = function() {
+  this.hasPlanCoinsurance = function () {
     if (!this.hasPlanFinancials()) return false;
     var coinsurance = this.json['plan']['financials']['coinsurance']['percents'];
     return(coinsurance['in_network'].length > 0 || coinsurance['out_network'].length > 0);
   }
 
   // Return coinsurance for the plan
-  this.getPlanCoinsurance = function() {
+  this.getPlanCoinsurance = function () {
     if (!this.hasPlanCoinsurance()) return null;
     return(this.json['plan']['financials']['coinsurance']);
   }
 
   // Check if the plan has any copayment information
-  this.hasPlanCopayment = function() {
+  this.hasPlanCopayment = function () {
     if (!this.hasPlanFinancials()) return false;
     var copayment = this.json['plan']['financials']['copayment']['amounts'];
     return(copayment['in_network'].length > 0 || copayment['out_network'].length > 0);
   }
 
   // Return copayment for the plan
-  this.getPlanCopayment = function() {
+  this.getPlanCopayment = function () {
     if (!this.hasPlanCopayment()) return null;
     return(this.json['plan']['financials']['copayment']);
   }
 
   // Check if the plan has any disclaimer information
-  this.hasPlanDisclaimer = function() {
+  this.hasPlanDisclaimer = function () {
     if (!this.hasPlanFinancials()) return false;
     return(this.json['plan']['financials']['disclaimer'] && this.json['plan']['financials']['disclaimer'].length > 0);
   }
 
   // Return disclaimer information for the plan
-  this.getPlanDisclaimer = function() {
+  this.getPlanDisclaimer = function () {
     if (!this.hasPlanDisclaimer()) return null;
     return(this.json['plan']['financials']['disclaimer']);
   }
 
   // Check if the plan has additional insurance policies
-  this.hasAdditionalInsurancePolicies = function() {
+  this.hasAdditionalInsurancePolicies = function () {
     if (!this.hasPlan()) return false;
     return(this.json['plan']['additional_insurance_policies'] && this.json['plan']['additional_insurance_policies'].length > 0);
   }
 
   // Return the additional insurance policies for the plan
-  this.getAdditionalInsurancePolicies = function() {
+  this.getAdditionalInsurancePolicies = function () {
     if (!this.hasAdditionalInsurancePolicies()) return null;
     return(this.json['plan']['additional_insurance_policies']);
   }
 
   // Check if the coverage answer has a services section
-  this.hasServices = function() {
+  this.hasServices = function () {
     return(this.json['services'] && this.json['services'].length > 0);
   }
 
   // Return the services for the coverage answer
-  this.getServices = function() {
+  this.getServices = function () {
     if (!this.hasServices()) return null;
     return(this.json['services']);
   }
@@ -234,16 +235,16 @@ function Coverage(json) {
     $.each(contactDetails, function (index, details) {
       var detailsList = new Array();
       if ((details['first_name'] && details['first_name'].length > 0) || (details['last_name'] && details['last_name'].length > 0)) {
-        detailsList.push(this.parseName(details));
+        detailsList.push(that.parseName(details));
       }
       if (details['address'] && details['address']['street_line_1'] && details['address']['street_line_1'].length > 0) {
-        detailsList.push(this.parseAddress(details['address']));
+        detailsList.push(that.parseAddress(details['address']));
       }
       if (details['identification_type'] && details['identification_type'].length > 0) {
         detailsList.push(details['identification_type'] + ': ' + details['identification_code']);
       }
       if (details['contacts'] && details['contacts'].length > 0) {
-        detailsList.push(this.parseContacts(details['contacts']));
+        detailsList.push(that.parseContacts(details['contacts']));
       }
       list.push(detailsList);
     });
@@ -255,13 +256,11 @@ function Coverage(json) {
     var contacts = new Array();
 
     $.each(contactData, function (index, contact) {
-      contacts.push(capitalise(contact.contact_type) + ": " + contact.contact_value);
+      contacts.push(that.capitalise(contact.contact_type) + ": " + contact.contact_value);
     });
 
     return contacts;
   };
-
-
 
   // Parse a person name and address from the demographics information
   this.parseNameAndAddress = function (person) {
@@ -423,6 +422,11 @@ function Coverage(json) {
       return true;
     }
   }
+
+  // Capitalize a string
+  this.capitalise = function (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 }
 
 function CoveragePlugin(coverage, coverageSection) {
@@ -442,94 +446,187 @@ function CoveragePlugin(coverage, coverageSection) {
     return panel;
   }
 
+  ///////////////////////////////////////////////////
+  // Functions that adds content to a container below
+  ///////////////////////////////////////////////////
+
   // Add a demographics section
-  this.addDemographicsSection = function () {
+  this.addDemographicsSection = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasDemographics()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Patient',
-          that.buildDemographics(that.coverage.getPatient())));
+          that.getDemographicsSection()));
     }
   }
 
   // Add insurance section part 1
-  this.addInsuranceSection1 = function () {
+  this.addInsuranceSection1 = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasInsurance() && that.coverage.hasDemographics()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Insurance',
-          that.buildInsuranceSection1(that.coverage.getInsurance(), that.coverage.getDemographics())));
+          that.getInsuranceSection1()));
     }
   }
 
   // Add insurance section part 2
-  this.addInsuranceSection2 = function () {
+  this.addInsuranceSection2 = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlan()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Plan',
-          that.buildInsuranceSection2(that.coverage.getPlan())));
+          that.getInsuranceSection2()));
     }
   }
 
   // Add insurance section part 3
-  this.addInsuranceSection3 = function () {
+  this.addInsuranceSection3 = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlan() && that.coverage.hasSubscriber()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Plan',
-          that.buildInsuranceSection3(that.coverage.getPlan(), that.coverage.getSubscriber())));
+          that.getInsuranceSection3()));
     }
   }
 
   // Add maximum, minimum and deductibles table
-  this.addMaximumMinimumDeductibles = function() {
+  this.addMaximumMinimumDeductibles = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlanFinancials()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Plan Maximums and Deductibles',
-          that.buildMaximumMinimumDeductibles(that.coverage.getPlanFinancials())));
+          that.getMaximumMinimumDeductibles()));
     }
   }
 
   // Add coinsurance
-  this.addCoinsurance = function() {
+  this.addCoinsurance = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlanCoinsurance()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Coinsurance',
-          that.buildCoinsurance(that.coverage.getPlanCoinsurance()))
-      );
+          that.getCoinsurance()));
     }
   }
 
   // Add copayment
-  this.addCopayment = function() {
+  this.addCopayment = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlanCopayment()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Copayment',
-          that.buildCopayment(that.coverage.getPlanCopayment()))
-      );
+          that.getCopayment()));
     }
   }
 
   // Add disclaimer
-  this.addDisclaimer = function() {
+  this.addDisclaimer = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasPlanDisclaimer()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Disclaimer',
-          that.buildDisclaimer(that.coverage.getPlanDisclaimer()))
-      );
+          that.getDisclaimer()));
     }
   }
 
   // Add additional insurance companies
-  this.addAdditionalInsurancePolicies = function() {
+  this.addAdditionalInsurancePolicies = function (container) {
+    container = container || this.coverageSection;
     if (that.coverage.hasAdditionalInsurancePolicies()) {
-      that.coverageSection.append(
+      container.append(
         that.buildPanelUI('Additional Insurance Policies',
-          that.buildAdditionalInsurancePolicies(that.coverage.getAdditionalInsurancePolicies()))
-      );
+          that.getAdditionalInsurancePolicies()));
     }
   }
 
   // Add all the services with generic table format
-  this.addGenericServices = function(columns) {
-    if (columns == null) columns = 2;
+  this.addGenericServices = function (columns, container) {
+    container = container || this.coverageSection;
+    columns = columns || 2;
+
+    if (that.coverage.hasServices()) {
+      container.append(that.getGenericServices(columns));
+    }
+  }
+
+  //////////////////////////////////////////////////////////////
+  // Functions that gets the tables with parsed content below
+  //////////////////////////////////////////////////////////////
+
+  // Gets the demographic section
+  this.getDemographicsSection = function () {
+    return(that.buildDemographics(that.coverage.getPatient()));
+  }
+
+  // Gets the insurance section part 1
+  this.getInsuranceSection1 = function () {
+    return(that.buildInsuranceSection1(that.coverage.getInsurance(), that.coverage.getDemographics()));
+  }
+
+  // Gets the insurance section part 2
+  this.getInsuranceSection2 = function () {
+    return(that.buildInsuranceSection2(that.coverage.getPlan()));
+  }
+
+  // Gets the insurance section part 3
+  this.getInsuranceSection3 = function () {
+    return(that.buildInsuranceSection3(that.coverage.getPlan(), that.coverage.getSubscriber()));
+  }
+
+  // Gets maximum, minimum and deductibles table
+  this.getMaximumMinimumDeductibles = function () {
+    return(that.buildMaximumMinimumDeductibles(that.coverage.getPlanFinancials()));
+  }
+
+  // Gets the coinsurance table
+  this.getCoinsurance = function () {
+    return(that.buildCoinsurance(that.coverage.getPlanCoinsurance()));
+  }
+
+  // Gets the copayment table
+  this.getCopayment = function () {
+    return(that.buildCopayment(that.coverage.getPlanCopayment()));
+  }
+
+  // Gets the disclaimer table
+  this.getDisclaimer = function () {
+    return(that.buildDisclaimer(that.coverage.getPlanDisclaimer()));
+  }
+
+  // Gets links to the additional insurance links
+  this.getAdditionalInsuranceLinks = function () {
+    var links = []
+
+    $.each(that.coverage.getAdditionalInsurancePolicies(), function (index, policy) {
+      var policy_name;
+      policy_name = policy['insurance_type_label'];
+      if (policy_name == null || policy_name.length <= 0) {
+        policy_name = policy['coverage_description'];
+      }
+      if ((policy_name == null || policy_name.length <= 0) && (policy['comments'].length > 0)) {
+        policy_name = policy['comments'][0];
+      }
+      if ((policy_name == null || policy_name.length <= 0) && (policy['contact_details'].length > 0)) {
+        policy_name = policy['contact_details'][0]['last_name'] || policy['contact_details'][0]['first_name'];
+      }
+      if (policy_name == null || policy_name.length <= 0) {
+        policy_name = "Policy #" + (index + 1);
+      }
+      links.push($("<a/>", {href: "#insurance-" + index, text: policy_name}));
+    });
+
+    return(links);
+  }
+
+  // Gets the additional insurance companies
+  this.getAdditionalInsurancePolicies = function () {
+    return(that.buildAdditionalInsurancePolicies(that.coverage.getAdditionalInsurancePolicies()));
+  }
+
+  // Gets all the services with generic table format
+  this.getGenericServices = function (columns) {
+    columns = columns || 2;
 
     var master_div = $("<div/>");
     var div = $("<div/>").addClass("clearfix").addClass("services-div").appendTo(master_div);
@@ -550,9 +647,12 @@ function CoveragePlugin(coverage, coverageSection) {
         }
       });
     }
-
-    that.coverageSection.append(master_div);
+    return(master_div);
   }
+
+  //////////////////////////////////////////////////////////////
+  // Functions that builds the tables with parsing content below
+  //////////////////////////////////////////////////////////////
 
   // Build the demographics section
   this.buildDemographics = function (person) {
@@ -708,8 +808,8 @@ function CoveragePlugin(coverage, coverageSection) {
       $("<td/>", {text: policy['coverage_description']}).appendTo(row);
       $("<td/>", {html: that.coverage.parseReference(policy['reference']).join("<br/>")}).appendTo(row);
       $("<td/>", {html: that.coverage.parseContactDetails(policy['contact_details']).join("<br/>")}).appendTo(row);
-      $("<td/>", {html: this.coverage.parseDates(policy['dates']).join("<br/>")}).appendTo(row);
-      $("<td/>", {html: this.coverage.parseComments(policy['comments']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseDates(policy['dates']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseComments(policy['comments']).join("<br/>")}).appendTo(row);
     });
 
     return(table);
@@ -1123,7 +1223,7 @@ function CoveragePlugin(coverage, coverageSection) {
     var row = $("<tr/>").appendTo(tableBody);
 
     var disclaimer = new Array();
-    $.each(data, function(idx, item) {
+    $.each(data, function (idx, item) {
       disclaimer.push(item);
     });
 
