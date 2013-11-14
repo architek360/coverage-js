@@ -1,0 +1,29 @@
+.hidden {
+  display: none;
+}
+
+.coverage-section {
+  width: 95%;
+  min-width: 920px;
+  margin: 0 auto;
+}
+
+.form-coverage {
+  padding-top: 50px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.right-grey-border {
+  border-right: 1px solid #ddd;
+}
+
+.left-grey-border {
+  border-left: 1px solid #ddd;
+}
+
+.no-bottom-border {
+  border-bottom: none !important;
+}
