@@ -1052,6 +1052,288 @@ function CoveragePlugin(coverage, coverageSection) {
     return(table);
   }
 
+  // Build Deductible for plan/service
+  this.buildDeductibles = function (data, service) {
+    var table = $("<table class=\"table table-hover\"/>");
+    var tableHead = $("<thead></thead>").appendTo(table);
+    var rowHead = $("<tr></tr>").appendTo(tableHead);
+    var rowHead2 = $("<tr class='warning'></tr>").appendTo(tableHead);
+    var tableBody = $("<tbody/>").appendTo(table);
+    var rows = null;
+
+    $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
+    $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
+    $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
+
+    $("<th/>", {text: "Network"}).appendTo(rowHead2);
+    $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
+    $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+    $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+    $("<th/>", {text: "Total"}).appendTo(rowHead2);
+    $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+
+    var rows = new Array();
+
+    $.each(data, function (key) {
+      var item = data[key];
+
+      if (key == 'deductible') {
+        // In Network Deductible Totals
+        if (item['totals'] && item['totals']['in_network'] && item['totals']['in_network'].length > 0) {
+          $.each(item['totals']['in_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 2, 4);
+            var row_idx = that.findFinancialRowIdx(rows, 'IN', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("IN", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+        // In Network Deductible Remaining
+        if (item['remainings'] && item['remainings']['in_network'] && item['remainings']['in_network'].length > 0) {
+          $.each(item['remainings']['in_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 3, 5);
+            var row_idx = that.findFinancialRowIdx(rows, 'IN', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("IN", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+
+        // Out Network Deductible Totals
+        if (item['totals'] && item['totals']['out_network'] && item['totals']['out_network'].length > 0) {
+          $.each(item['totals']['out_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 2, 4);
+            var row_idx = that.findFinancialRowIdx(rows, 'OUT', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("OUT", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+        // Out Network Deductible Remaining
+        if (item['remainings'] && item['remainings']['out_network'] && item['remainings']['out_network'].length > 0) {
+          $.each(item['remainings']['out_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 3, 5);
+            var row_idx = that.findFinancialRowIdx(rows, 'OUT', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("OUT", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+      }
+    });
+
+    var sortByContent = function (a, b) {
+      var count_a = 0;
+      var count_b = 0;
+      for (var i = 2; i < 6; i++) {
+        if (a[i].text() != "")
+          count_a += 1;
+        if (b[i].text() != "")
+          count_b += 1;
+      }
+      if (count_a < count_b) return 1;
+      if (count_a > count_b) return -1;
+      if (a[0].text() == "IN") return -1;
+      return 0;
+    }
+    rows.sort(sortByContent);
+
+    $.each(rows, function (idx, row) {
+      tableBody.append($("<tr/>", {html: row}));
+    });
+
+    return(table);
+  }
+
+  // Build Maximum, Minimum for plan/service
+  this.buildMaximumMinimum = function (data) {
+    var table = $("<table class=\"table table-hover\"/>");
+    var tableHead = $("<thead></thead>").appendTo(table);
+    var rowHead = $("<tr></tr>").appendTo(tableHead);
+    var rowHead2 = $("<tr class='warning'></tr>").appendTo(tableHead);
+    var tableBody = $("<tbody/>").appendTo(table);
+    var rows = null;
+
+    $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
+    $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
+    $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
+
+    $("<th/>", {text: "Network"}).appendTo(rowHead2);
+    $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
+    $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+    $("<th/>", {text: "Remaining"}).appendTo(rowHead2);
+    $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+    $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+
+    var rows = new Array();
+
+    $.each(data, function (key) {
+      var item = data[key];
+
+      if (key == 'stop_loss') {
+        // In Network Stop Loss Totals
+        if (item['totals'] && item['totals']['in_network'] && item['totals']['in_network'].length > 0) {
+          $.each(item['totals']['in_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 2, 4);
+            var row_idx = that.findFinancialRowIdx(rows, 'IN', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("IN", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+        // In Network Stop Loss Remaining
+        if (item['remainings'] && item['remainings']['in_network'] && item['remainings']['in_network'].length > 0) {
+          $.each(item['remainings']['in_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 3, 5);
+            var row_idx = that.findFinancialRowIdx(rows, 'IN', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("IN", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+
+        // Out Network Stop Loss Totals
+        if (item['totals'] && item['totals']['out_network'] && item['totals']['out_network'].length > 0) {
+          $.each(item['totals']['out_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 2, 4);
+            var row_idx = that.findFinancialRowIdx(rows, 'OUT', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("OUT", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+        // Out Network Stop Loss Remaining
+        if (item['remainings'] && item['remainings']['in_network'] && item['remainings']['out_network'].length > 0) {
+          $.each(item['remainings']['out_network'], function (idx, info) {
+            var level = info['level'];
+            var amount = that.coverage.parseFinancialAmount(info);
+            var additional_information = that.parseFinancialAdditionalInfo(info);
+
+            var col_index = that.getFinancialColIdx(level, 3, 5);
+            var row_idx = that.findFinancialRowIdx(rows, 'OUT', additional_information, col_index);
+            var row = null;
+            if (row_idx != null) {
+              row = rows[row_idx];
+            } else {
+              row = that.buildFinancialEmptyRow("OUT", 6);
+              rows.push(row);
+            }
+
+            row[col_index] = $("<td/>", {text: amount});
+
+            that.addAdditionalInfoToFinancialRow(row, additional_information);
+          });
+        }
+      }
+    });
+
+    var sortByContent = function (a, b) {
+      var count_a = 0;
+      var count_b = 0;
+      for (var i = 2; i < 6; i++) {
+        if (a[i].text() != "")
+          count_a += 1;
+        if (b[i].text() != "")
+          count_b += 1;
+      }
+      if (count_a < count_b) return 1;
+      if (count_a > count_b) return -1;
+      if (a[0].text() == "IN") return -1;
+      return 0;
+    }
+    rows.sort(sortByContent);
+
+    $.each(rows, function (idx, row) {
+      tableBody.append($("<tr/>", {html: row}));
+    });
+
+    return(table);
+  }
+
   // Build coinsurance table
   this.buildCoinsurance = function (data) {
     var table = $("<table class=\"table table-hover\"/>");
