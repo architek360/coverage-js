@@ -669,6 +669,12 @@ function CoveragePlugin(coverage, coverageSection) {
     }
   }
 
+  // Add authorizations information
+  this.addAuthorizations = function(container) {
+    container = container || this.coverageSection;
+    container.append(that.getAuthorizations());
+  }
+
   //////////////////////////////////////////////////////////////
   // Functions that gets the tables with parsed content below
   //////////////////////////////////////////////////////////////
@@ -723,15 +729,31 @@ function CoveragePlugin(coverage, coverageSection) {
     return(that.buildDisclaimer(that.coverage.getPlanDisclaimer()));
   }
 
+  // Add the service column for the table header
+  this.addServiceHeaderColumn = function (table) {
+    $(table).find('thead').find("tr:last").prepend($("<th/>", {text: "Service"}));
+  }
+
+  // Add a column to each one of the body rows
+  this.prependBodyColumn = function (table, text) {
+    $(table).find('tbody').find("tr").prepend($("<th/>", {text: text}));
+  }
+
   // Gets the maximum and minimum for the plan and services
   that.getMaximumMinimum = function () {
     var plan_stop_loss = that.coverage.getPlanMaximumMinimum();
     var services = that.coverage.getServices();
     var table = that.buildMaximumMinimum(plan_stop_loss);
-    $.each(services, function(idx, service) {
+
+    // Add the service column to the table
+    this.addServiceHeaderColumn(table);
+    this.prependBodyColumn(table, "Plan");
+
+    $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var stop_loss = service['financials']['stop_loss'];
         var temp_table = that.buildMaximumMinimum(stop_loss, false);
+        that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
       }
@@ -744,10 +766,16 @@ function CoveragePlugin(coverage, coverageSection) {
     var plan_deductibles = that.coverage.getPlanDeductibles();
     var services = that.coverage.getServices();
     var table = that.buildDeductibles(plan_deductibles);
-    $.each(services, function(idx, service) {
+
+    // Add the service column to the table
+    this.addServiceHeaderColumn(table);
+    this.prependBodyColumn(table, "Plan");
+
+    $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var deductibles = service['financials']['deductible'];
         var temp_table = that.buildDeductibles(deductibles, false);
+        that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
       }
@@ -760,10 +788,16 @@ function CoveragePlugin(coverage, coverageSection) {
     var plan_coinsurance = that.coverage.getPlanCoinsurance();
     var services = that.coverage.getServices();
     var table = that.buildCoinsurance(plan_coinsurance, true);
-    $.each(services, function(idx, service) {
+
+    // Add the service column to the table
+    this.addServiceHeaderColumn(table);
+    this.prependBodyColumn(table, "Plan");
+
+    $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var coinsurance = service['financials']['coinsurance'];
         var temp_table = that.buildCoinsurance(coinsurance, false);
+        that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
       }
@@ -776,10 +810,16 @@ function CoveragePlugin(coverage, coverageSection) {
     var plan_copayment = that.coverage.getPlanCopayment();
     var services = that.coverage.getServices();
     var table = that.buildCopayment(plan_copayment);
-    $.each(services, function(idx, service) {
+
+    // Add the service column to the table
+    this.addServiceHeaderColumn(table);
+    this.prependBodyColumn(table, "Plan");
+
+    $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var copayment = service['financials']['copayment'];
         var temp_table = that.buildCopayment(copayment, false);
+        that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
       }
@@ -843,6 +883,25 @@ function CoveragePlugin(coverage, coverageSection) {
       });
     }
     return(master_div);
+  }
+
+  // Gets all the authorization information
+  this.getAuthorizations = function() {
+    var plan_financials = that.getPlanFinancials;
+    if (that.covearge.hasServices()) {
+      var services = this.coverage.getServices();
+      $.each(services, function(idx, service) {
+
+      });
+    }
+  }
+
+  this.buildAuhorizations = function(financials) {
+    if (financials) {
+      $.each(financials, function(idx, financial) {
+
+      });
+    }
   }
 
   //////////////////////////////////////////////////////////////
