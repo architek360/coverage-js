@@ -151,7 +151,7 @@ buildCoverageHTML = function (coverage) {
   var tab = $("<div/>").addClass("financials_tab").append(financials).append(tab_content);
   container.append('<div class="clearfix">&nbsp;</div>').append(tab);
 
-  plugin.addDisclaimer();
+  plugin.addPlanDisclaimer();
   plugin.addAdditionalInsurancePolicies();
 
   var body = $('body');

@@ -74,7 +74,7 @@ function Coverage(json) {
   // Parses the errors on the coverage answer
   this.parseError = function () {
     if (this.hasError())
-      return(this.error);
+      return(this.json.error);
     else
       return(null);
   }
@@ -136,10 +136,16 @@ function Coverage(json) {
     return(this.json['plan']);
   }
 
+  // Check if a json element has financials information
+  this.hasFinancials = function(element) {
+    return(element['financials'] && typeof(element['financials']) == 'object');
+  }
+
   // Check if the plan has financials information
   this.hasPlanFinancials = function () {
     if (!this.hasPlan()) return false;
-    return(this.json['plan']['financials'] && this.json['plan']['financials']['deductible']);
+    var plan = this.json['plan'];
+    return(this.hasFinancials(plan));
   }
 
   // Return the financials for the plan
@@ -616,7 +622,7 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add deductibles table
   this.addDeductibles = function (container) {
     container = container || this.coverageSection;
-    if (that.coverage.hasDeductibles()) {
+    if (that.coverage.hasPlanDeductibles()) {
       container.append(
         that.buildPanelUI('Plan Maximums and Deductibles',
           that.getDeductibles()));
@@ -712,8 +718,8 @@ function CoveragePlugin(coverage, coverageSection) {
     return(that.buildCopayment(that.coverage.getPlanCopayment()));
   }
 
-  // Gets the disclaimer table
-  this.getDisclaimer = function () {
+  // Gets the plan disclaimer table
+  this.getPlanDisclaimer = function () {
     return(that.buildDisclaimer(that.coverage.getPlanDisclaimer()));
   }
 
@@ -726,6 +732,14 @@ function CoveragePlugin(coverage, coverageSection) {
   that.getDeductibles = function() {
     var plan_deductibles = that.coverage.getPlanDeductibles();
     var services = that.coverage.getServices();
+    var table = that.buildDeductibles(plan_deductibles, true);
+    $.each(services, function(idx, service) {
+      if (that.coverage.hasFinancials(service)) {
+        var deductibles = service['financials']['deductible'];
+        var temp_table = that.buildDeductibles(deductibles, false);
+      }
+    });
+    return(table);
   }
 
   // Gets the coinsurance for the plan and services
@@ -742,23 +756,25 @@ function CoveragePlugin(coverage, coverageSection) {
   this.getAdditionalInsuranceLinks = function () {
     var links = []
 
-    $.each(that.coverage.getAdditionalInsurancePolicies(), function (index, policy) {
-      var policy_name;
-      policy_name = policy['insurance_type_label'];
-      if (policy_name == null || policy_name.length <= 0) {
-        policy_name = policy['coverage_description'];
-      }
-      if ((policy_name == null || policy_name.length <= 0) && (policy['comments'].length > 0)) {
-        policy_name = policy['comments'][0];
-      }
-      if ((policy_name == null || policy_name.length <= 0) && (policy['contact_details'].length > 0)) {
-        policy_name = policy['contact_details'][0]['last_name'] || policy['contact_details'][0]['first_name'];
-      }
-      if (policy_name == null || policy_name.length <= 0) {
-        policy_name = "Policy #" + (index + 1);
-      }
-      links.push($("<a/>", {href: "#insurance-" + index, text: policy_name}));
-    });
+    if (that.coverage.hasAdditionalInsurancePolicies()) {
+      $.each(that.coverage.getAdditionalInsurancePolicies(), function (index, policy) {
+        var policy_name;
+        policy_name = policy['insurance_type_label'];
+        if (policy_name == null || policy_name.length <= 0) {
+          policy_name = policy['coverage_description'];
+        }
+        if ((policy_name == null || policy_name.length <= 0) && (policy['comments'].length > 0)) {
+          policy_name = policy['comments'][0];
+        }
+        if ((policy_name == null || policy_name.length <= 0) && (policy['contact_details'].length > 0)) {
+          policy_name = policy['contact_details'][0]['last_name'] || policy['contact_details'][0]['first_name'];
+        }
+        if (policy_name == null || policy_name.length <= 0) {
+          policy_name = "Policy #" + (index + 1);
+        }
+        links.push($("<a/>", {href: "#insurance-" + index, text: policy_name}));
+      });
+    }
 
     return(links);
   }
@@ -1197,24 +1213,29 @@ function CoveragePlugin(coverage, coverageSection) {
   }
 
   // Build Deductible for plan/service
-  this.buildDeductibles = function (data, service) {
+  this.buildDeductibles = function (data, headers) {
+    if (headers != false) headers = true;
     var table = $("<table class=\"table table-hover\"/>");
     var tableHead = $("<thead></thead>").appendTo(table);
-    var rowHead = $("<tr></tr>").appendTo(tableHead);
-    var rowHead2 = $("<tr class='warning'></tr>").appendTo(tableHead);
+    if (headers) {
+      var rowHead = $("<tr></tr>").appendTo(tableHead);
+      var rowHead2 = $("<tr class='warning'></tr>").appendTo(tableHead);
+    }
     var tableBody = $("<tbody/>").appendTo(table);
     var rows = null;
 
-    $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
-    $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
-    $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
+    if (headers) {
+      $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
+      $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
+      $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
 
-    $("<th/>", {text: "Network"}).appendTo(rowHead2);
-    $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
-    $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
-    $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
-    $("<th/>", {text: "Total"}).appendTo(rowHead2);
-    $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+      $("<th/>", {text: "Network"}).appendTo(rowHead2);
+      $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
+      $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+      $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+      $("<th/>", {text: "Total"}).appendTo(rowHead2);
+      $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+    }
 
     var rows = new Array();
 
