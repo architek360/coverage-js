@@ -101,6 +101,7 @@ var successCallback = function (data) {
 // When there is an error on the api response, like the insurance company is down for maiteinance, we get an error
 // which could be retrieved by coverage.parseError()
 buildError = function (error) {
+  $(".coverage-section").remove();
   var coverageSection = $("<section/>").addClass("coverage-section");
   var h1 = $("<h1/>", {text: error['reject_reason_description']}).appendTo(coverageSection);
   var body = $('body');
@@ -109,6 +110,7 @@ buildError = function (error) {
 
 // When the api call was ok and we get data from the patient, build the success form
 buildCoverageHTML = function(coverage) {
+  $(".coverage-section").remove();
   var container = $("<section/>").addClass("coverage-section");
   var additionalInsuranceSection;
   var insuranceSection = $("<section/>").addClass("insurance-section");
