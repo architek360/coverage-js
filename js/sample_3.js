@@ -142,9 +142,9 @@ buildCoverageHTML = function (coverage) {
   var authorizations = $("<div/>", {id: "authorizations"}).addClass("tab-pane active").appendTo(tab_content);
 
   plugin.addDeductibles(deductibles);
-  //plugin.addMaximumMinimum(maximums);
-  //plugin.addCoinsurance(coinsurance);
-  //plugin.addCopayment(copayment);
+  plugin.addMaximumMinimum(maximums);
+  plugin.addCoinsurance(coinsurance);
+  plugin.addCopayment(copayment);
   //plugin.addAuthorizations(authorizations);
 
   // Append the financials to the container
