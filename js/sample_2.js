@@ -11,7 +11,10 @@ $(document).ready(function () {
   }
 
   // Whenever the user click on the radio button for test, show test or real form
-  $("input[name=test]").on('click', drawForm());
+  $("input[name=test]").on('click', drawForm);
+
+  // Draw the form according to the test selection
+  drawForm();
 
   // When the user clicks on submit, do an api request to eligible api and parse the answer
   $(".form-coverage").on('submit', function (e) {

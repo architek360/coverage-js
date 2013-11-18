@@ -2,7 +2,7 @@ var coverage_url = "https://gds.eligibleapi.com/v1.3/coverage/all.json"
 
 $(document).ready(function () {
   // Shows the test form or real form depending on the value of radio button named test
-  var drawForm = function () {
+  var drawForm = function (e) {
     if ($("input[name=test]:checked").val() == "true") {
       showTestForm();
     } else {
@@ -11,7 +11,10 @@ $(document).ready(function () {
   }
 
   // Whenever the user click on the radio button for test, show test or real form
-  $("input[name=test]").on('click', drawForm());
+  $("input[name=test]").on('click', drawForm);
+
+  // Draw the form according to the test selection
+  drawForm();
 
   // When the user clicks on submit, do an api request to eligible api and parse the answer
   $(".form-coverage").on('submit', function (e) {

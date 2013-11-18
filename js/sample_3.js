@@ -11,7 +11,10 @@ $(document).ready(function () {
   }
 
   // Whenever the user click on the radio button for test, show test or real form
-  $("input[name=test]").on('click', drawForm());
+  $("input[name=test]").on('click', drawForm);
+
+  // Draw the form according to the test selection
+  drawForm();
 
   // When the user clicks on submit, do an api request to eligible api and parse the answer
   $(".form-coverage").on('submit', function (e) {
@@ -140,7 +143,11 @@ buildCoverageHTML = function (coverage) {
   var copayment = $("<div/>", {id: "copayment"}).addClass("tab-pane active").appendTo(tab_content);
   var authorizations = $("<div/>", {id: "authorizations"}).addClass("tab-pane active").appendTo(tab_content);
 
-  plugin.addMaximumMinimumDeductibles(maximums);
+  plugin.addDeductibles(deductibles);
+  plugin.addMaximumMinimum(maximums);
+  plugin.addCoinsurance(coinsurance);
+  plugin.addCopayment(copayment);
+  //plugin.addAuthorizations(authorizations);
 
   // Append the financials to the container
   var tab = $("<div/>").addClass("financials_tab").append(financials).append(tab_content);

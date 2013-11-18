@@ -500,6 +500,26 @@ function CoveragePlugin(coverage, coverageSection) {
     }
   }
 
+  // Add maximum, minimum table
+  this.addMaximumMinimum = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanFinancials()) {
+      container.append(
+        that.buildPanelUI('Plan Maximums and Deductibles',
+          that.getMaximumMinimum()));
+    }
+  }
+
+  // Add deductibles table
+  this.addDeductibles = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanFinancials()) {
+      container.append(
+        that.buildPanelUI('Plan Maximums and Deductibles',
+          that.getDeductibles()));
+    }
+  }
+
   // Add coinsurance
   this.addCoinsurance = function (container) {
     container = container || this.coverageSection;
@@ -577,6 +597,16 @@ function CoveragePlugin(coverage, coverageSection) {
   // Gets maximum, minimum and deductibles table
   this.getMaximumMinimumDeductibles = function () {
     return(that.buildMaximumMinimumDeductibles(that.coverage.getPlanFinancials()));
+  }
+
+  // Gets the maximum and minimu table
+  this.getMaximumMinimum = function() {
+    return(that.buildDeductibles(that.coverage.getMaximumMinimum()));
+  }
+
+  // Gets the deductible table
+  this.getDeductibles = function () {
+    return(that.buildDeductibles(that.coverage.getDeductible()));
   }
 
   // Gets the coinsurance table
