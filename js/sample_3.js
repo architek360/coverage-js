@@ -1,5 +1,3 @@
-var coverage_url = "https://gds.eligibleapi.com/v1.3/coverage/all.json"
-
 $(document).ready(function () {
   // Shows the test form or real form depending on the value of radio button named test
   var drawForm = function () {
@@ -144,9 +142,9 @@ buildCoverageHTML = function (coverage) {
   var authorizations = $("<div/>", {id: "authorizations"}).addClass("tab-pane active").appendTo(tab_content);
 
   plugin.addDeductibles(deductibles);
-  plugin.addMaximumMinimum(maximums);
-  plugin.addCoinsurance(coinsurance);
-  plugin.addCopayment(copayment);
+  //plugin.addMaximumMinimum(maximums);
+  //plugin.addCoinsurance(coinsurance);
+  //plugin.addCopayment(copayment);
   //plugin.addAuthorizations(authorizations);
 
   // Append the financials to the container

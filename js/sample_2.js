@@ -1,5 +1,3 @@
-var coverage_url = "https://gds.eligibleapi.com/v1.3/coverage/all.json"
-
 $(document).ready(function () {
   // Shows the test form or real form depending on the value of radio button named test
   var drawForm = function () {
@@ -122,10 +120,10 @@ buildCoverageHTML = function(coverage) {
   plugin.addInsuranceSection1(insuranceSection);
   plugin.addInsuranceSection2(insuranceSection);
   plugin.addInsuranceSection3(insuranceSection);
-  plugin.addMaximumMinimumDeductibles();
-  plugin.addCoinsurance();
-  plugin.addCopayment();
-  plugin.addDisclaimer();
+  plugin.addPlanMaximumMinimumDeductibles();
+  plugin.addPlanCoinsurance();
+  plugin.addPlanCopayment();
+  plugin.addPlanDisclaimer();
   plugin.addAdditionalInsurancePolicies();
   plugin.addGenericServices();
 

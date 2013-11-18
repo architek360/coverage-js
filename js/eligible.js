@@ -148,11 +148,53 @@ function Coverage(json) {
     return(this.json['plan']['financials']);
   }
 
+  // Check if a json element has maximum and minimum information
+  this.hasMaximumMinimum = function(stop_loss) {
+    return(stop_loss['remainings']['in_network'].length > 0 || stop_loss['remainings']['out_network'].length > 0 ||
+      stop_loss['totals']['in_network'].length > 0 || stop_loss['totals']['out_network'].length > 0);
+  }
+
+  // Check if the plan has maximum and minimums
+  this.hasPlanMaximumMinimum = function() {
+    if (!this.hasPlanFinancials()) return false;
+    var stop_loss = this.json['plan']['financials']['stop_loss'];
+    return(this.hasMaximumMinimum(stop_loss));
+  }
+
+  // Get plan maximum and minimums
+  this.getPlanMaximumMinimum = function() {
+    if (!this.hasPlanMaximumMinimum()) return null;
+    return(this.json['plan']['financials']['stop_loss']);
+  }
+
+  // Checks if a json element has deductible information
+  this.hasDeductibles = function(deductible) {
+    return(deductible['remainings']['in_network'].length > 0 || deductible['remainings']['out_network'].length > 0 ||
+      deductible['totals']['in_network'].length > 0 || deductible['totals']['out_network'].length > 0);
+  }
+
+  // Check if the plan has deductibles
+  this.hasPlanDeductibles = function() {
+    if (!this.hasPlanFinancials()) return false;
+    var deductible = this.json['plan']['financials']['deductible'];
+    return(this.hasDeductibles(deductible));
+  }
+
+  // Gets the plan deductibles
+  this.getPlanDeductibles = function() {
+    if (!this.hasPlanDeductibles()) return null;
+    return(this.json['plan']['financials']['deductible']);
+  }
+
+  this.hasCoinsurance = function(coinsurance) {
+    return(coinsurance['in_network'].length > 0 || coinsurance['out_network'].length > 0);
+  }
+
   // Check if the plan has any coinsurance information
   this.hasPlanCoinsurance = function () {
     if (!this.hasPlanFinancials()) return false;
     var coinsurance = this.json['plan']['financials']['coinsurance']['percents'];
-    return(coinsurance['in_network'].length > 0 || coinsurance['out_network'].length > 0);
+    return(this.hasCoinsurance(coinsurance));
   }
 
   // Return coinsurance for the plan
@@ -161,11 +203,16 @@ function Coverage(json) {
     return(this.json['plan']['financials']['coinsurance']);
   }
 
+  // Checks if a json element has copayment information
+  this.hasCopayment = function(copayment) {
+    return(copayment['in_network'].length > 0 || copayment['out_network'].length > 0);
+  }
+
   // Check if the plan has any copayment information
   this.hasPlanCopayment = function () {
     if (!this.hasPlanFinancials()) return false;
     var copayment = this.json['plan']['financials']['copayment']['amounts'];
-    return(copayment['in_network'].length > 0 || copayment['out_network'].length > 0);
+    return(this.hasCopayment(copayment));
   }
 
   // Return copayment for the plan
@@ -174,10 +221,16 @@ function Coverage(json) {
     return(this.json['plan']['financials']['copayment']);
   }
 
+  // Check if a json element has disclaimer information
+  this.hasDisclaimer = function(disclaimer) {
+    return(disclaimer && disclaimer.length > 0);
+  }
+
   // Check if the plan has any disclaimer information
   this.hasPlanDisclaimer = function () {
     if (!this.hasPlanFinancials()) return false;
-    return(this.json['plan']['financials']['disclaimer'] && this.json['plan']['financials']['disclaimer'].length > 0);
+    var disclaimer = this.json['plan']['financials']['disclaimer'];
+    return(this.hasDisclaimer(disclaimer));
   }
 
   // Return disclaimer information for the plan
@@ -490,20 +543,70 @@ function CoveragePlugin(coverage, coverageSection) {
     }
   }
 
-  // Add maximum, minimum and deductibles table
-  this.addMaximumMinimumDeductibles = function (container) {
+  // Add plan maximum, minimum and deductibles table
+  this.addPlanMaximumMinimumDeductibles = function (container) {
     container = container || this.coverageSection;
     if (that.coverage.hasPlanFinancials()) {
       container.append(
         that.buildPanelUI('Plan Maximums and Deductibles',
-          that.getMaximumMinimumDeductibles()));
+          that.getPlanMaximumMinimumDeductibles()));
     }
   }
 
-  // Add maximum, minimum table
-  this.addMaximumMinimum = function (container) {
+  // Add plan maximum and minimum table
+  this.addPlanMaximumMinimum = function (container) {
     container = container || this.coverageSection;
     if (that.coverage.hasPlanFinancials()) {
+      container.append(
+        that.buildPanelUI('Plan Maximums and Deductibles',
+          that.getPlanMaximumMinimum()));
+    }
+  }
+
+  // Add deductibles table
+  this.addPlanDeductibles = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanDeductibles()) {
+      container.append(
+        that.buildPanelUI('Plan Maximums and Deductibles',
+          that.getPlanDeductibles()));
+    }
+  }
+
+  // Add coinsurance
+  this.addPlanCoinsurance = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanCoinsurance()) {
+      container.append(
+        that.buildPanelUI('Coinsurance',
+          that.getPlanCoinsurance()));
+    }
+  }
+
+  // Add copayment
+  this.addPlanCopayment = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanCopayment()) {
+      container.append(
+        that.buildPanelUI('Copayment',
+          that.getPlanCopayment()));
+    }
+  }
+
+  // Add disclaimer
+  this.addPlanDisclaimer = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanDisclaimer()) {
+      container.append(
+        that.buildPanelUI('Disclaimer',
+          that.getPlanDisclaimer()));
+    }
+  }
+
+  // Add plan maximum and minimum table
+  this.addMaximumMinimum = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasFinancials()) {
       container.append(
         that.buildPanelUI('Plan Maximums and Deductibles',
           that.getMaximumMinimum()));
@@ -513,7 +616,7 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add deductibles table
   this.addDeductibles = function (container) {
     container = container || this.coverageSection;
-    if (that.coverage.hasPlanFinancials()) {
+    if (that.coverage.hasDeductibles()) {
       container.append(
         that.buildPanelUI('Plan Maximums and Deductibles',
           that.getDeductibles()));
@@ -523,7 +626,7 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add coinsurance
   this.addCoinsurance = function (container) {
     container = container || this.coverageSection;
-    if (that.coverage.hasPlanCoinsurance()) {
+    if (that.coverage.hasCoinsurance()) {
       container.append(
         that.buildPanelUI('Coinsurance',
           that.getCoinsurance()));
@@ -533,20 +636,10 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add copayment
   this.addCopayment = function (container) {
     container = container || this.coverageSection;
-    if (that.coverage.hasPlanCopayment()) {
+    if (that.coverage.hasCopayment()) {
       container.append(
         that.buildPanelUI('Copayment',
           that.getCopayment()));
-    }
-  }
-
-  // Add disclaimer
-  this.addDisclaimer = function (container) {
-    container = container || this.coverageSection;
-    if (that.coverage.hasPlanDisclaimer()) {
-      container.append(
-        that.buildPanelUI('Disclaimer',
-          that.getDisclaimer()));
     }
   }
 
@@ -594,34 +687,55 @@ function CoveragePlugin(coverage, coverageSection) {
     return(that.buildInsuranceSection3(that.coverage.getPlan(), that.coverage.getSubscriber()));
   }
 
-  // Gets maximum, minimum and deductibles table
-  this.getMaximumMinimumDeductibles = function () {
+  // Gets the plan maximum, minimum and deductibles table
+  this.getPlanMaximumMinimumDeductibles = function () {
     return(that.buildMaximumMinimumDeductibles(that.coverage.getPlanFinancials()));
   }
 
-  // Gets the maximum and minimu table
-  this.getMaximumMinimum = function() {
-    return(that.buildDeductibles(that.coverage.getMaximumMinimum()));
+  // Gets the plan maximum and minimum table
+  this.getPlanMaximumMinimum = function() {
+    return(that.buildMaximumMinimum(that.coverage.getPlanMaximumMinimum()));
   }
 
-  // Gets the deductible table
-  this.getDeductibles = function () {
-    return(that.buildDeductibles(that.coverage.getDeductible()));
+  // Gets the plan deductible table
+  this.getPlanDeductibles = function () {
+    return(that.buildDeductibles(that.coverage.getPlanDeductibles()));
   }
 
-  // Gets the coinsurance table
-  this.getCoinsurance = function () {
+  // Gets the plan coinsurance table
+  this.getPlanCoinsurance = function () {
     return(that.buildCoinsurance(that.coverage.getPlanCoinsurance()));
   }
 
-  // Gets the copayment table
-  this.getCopayment = function () {
+  // Gets the plan copayment table
+  this.getPlanCopayment = function () {
     return(that.buildCopayment(that.coverage.getPlanCopayment()));
   }
 
   // Gets the disclaimer table
   this.getDisclaimer = function () {
     return(that.buildDisclaimer(that.coverage.getPlanDisclaimer()));
+  }
+
+  // Gets the maximum and minimum for the plan and services
+  that.getMaximumMinimum = function() {
+
+  }
+
+  // Gets the Deductibles for the plan and services
+  that.getDeductibles = function() {
+    var plan_deductibles = that.coverage.getPlanDeductibles();
+    var services = that.coverage.getServices();
+  }
+
+  // Gets the coinsurance for the plan and services
+  that.getCoinsurance = function() {
+
+  }
+
+  // Gets the copayment for the plan and services
+  that.getCopayment = function() {
+
   }
 
   // Gets links to the additional insurance links
