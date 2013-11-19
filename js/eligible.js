@@ -276,13 +276,13 @@ function Coverage(json) {
   // Returns subscriber information within an Array
   this.parseSubscriberInfo = function (subscriber) {
     var data = new Array();
-    if (subscriber['member_id'].length > 0)
+    if (subscriber['member_id'])
       data.push("Member ID: " + subscriber['member_id']);
-    if (subscriber['dob'].length > 0)
+    if (subscriber['dob'])
       data.push("DOB: " + subscriber['dob']);
-    if (subscriber['group_id'].length > 0)
+    if (subscriber['group_id'])
       data.push("Group ID: " + subscriber['group_id']);
-    if (subscriber['group_name'].length > 0)
+    if (subscriber['group_name'])
       data.push("Group Name: " + subscriber['group_name']);
     data = data.concat(this.parseNameAndAddress(subscriber));
     return(data);
@@ -293,13 +293,13 @@ function Coverage(json) {
     var list = new Array();
     $.each(contactDetails, function (index, details) {
       var detailsList = new Array();
-      if ((details['first_name'] && details['first_name'].length > 0) || (details['last_name'] && details['last_name'].length > 0)) {
+      if ((details['first_name']) || (details['last_name'])) {
         detailsList.push(that.parseName(details));
       }
-      if (details['address'] && details['address']['street_line_1'] && details['address']['street_line_1'].length > 0) {
+      if (details['address'] && details['address']['street_line_1']) {
         detailsList.push(that.parseAddress(details['address']));
       }
-      if (details['identification_type'] && details['identification_type'].length > 0) {
+      if (details['identification_type']) {
         detailsList.push(details['identification_type'] + ': ' + details['identification_code']);
       }
       if (details['contacts'] && details['contacts'].length > 0) {
@@ -353,9 +353,9 @@ function Coverage(json) {
   this.parseAddress = function (addressData) {
     var list = new Array();
 
-    if (addressData['street_line_1'] && addressData['street_line_1'].length > 0) {
+    if (addressData['street_line_1'] && addressData['street_line_1']) {
       list.push(addressData['street_line_1']);
-      if (addressData['street_line_2'] && addressData['street_line_2'].length > 0) {
+      if (addressData['street_line_2'] && addressData['street_line_2']) {
         list.push(addressData['street_line_2']);
       }
     }
@@ -437,9 +437,9 @@ function Coverage(json) {
   // percent format
   this.parseFinancialAmount = function (info) {
     var amount = null;
-    if (info['amount'] && info['amount'].length > 0)
+    if (info['amount'])
       amount = this.parseAmount(info['amount']);
-    else if (info['percent'] && info['percent'].length > 0)
+    else if (info['percent'])
       amount = "% " + info['percent'];
     return amount;
   }
@@ -1456,11 +1456,7 @@ function CoveragePlugin(coverage, coverageSection) {
     if (data) {
 
       $.each(data, function (key) {
-        console.log("---")
-        console.log(key);
         var item = data[key];
-        console.log(item);
-        console.log("---")
 
         // In Network Stop Loss Totals
         if (key == 'totals' && item['in_network'] && item['in_network'].length > 0) {

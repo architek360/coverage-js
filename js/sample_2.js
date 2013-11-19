@@ -40,17 +40,26 @@ showTestForm = function () {
 
 var fetchCoverage = function () {
   // Put all the form fields into an object
-  var params = {
-    api_key: $("#api_key").val(),
-    payer_id: $("#payer_id").val(),
-    provider_npi: $("#provider_npi").val(),
-    provider_last_name: $("#provider_last_name").val(),
-    provider_first_name: $("#provider_first_name").val(),
-    member_id: $("#member_id").val(),
-    member_first_name: $("#member_first_name").val(),
-    member_last_name: $("#member_last_name").val(),
-    member_dob: $("#member_dob").val(),
-    test: $("#test").val() || "false"
+  if ($("input[name=test]:checked").val() == "true") {
+    var params = {
+      api_key: $("#api_key").val(),
+      member_id: $("#test_member_id").val(),
+      provider_npi: "1234567890",
+      test: "true"
+    }
+  } else {
+    var params = {
+      api_key: $("#api_key").val(),
+      payer_id: $("#payer_id").val(),
+      provider_npi: $("#provider_npi").val(),
+      provider_last_name: $("#provider_last_name").val(),
+      provider_first_name: $("#provider_first_name").val(),
+      member_id: $("#member_id").val(),
+      member_first_name: $("#member_first_name").val(),
+      member_last_name: $("#member_last_name").val(),
+      member_dob: $("#member_dob").val(),
+      test: "false"
+    }
   };
 
   // Validation, if any parameter is missing, add the bootstrap class has-error
@@ -63,7 +72,7 @@ var fetchCoverage = function () {
   });
 
   // If there is any error, alert, otherwise, do the request
-  if ($(".has-error").length > 0) {
+  if ($("input[name=test]:checked").val() != "true" && $(".has-error").length > 0) {
     alert("Please fill all the fields");
   } else {
     $(".has-error").removeClass("has-error");
