@@ -177,3 +177,11 @@
 .financials_tab {
   margin: 0 0 30px 0;
 }
+
+
+#deductibles table td:nth-child(n+4),
+#maximums table td:nth-child(n+4),
+#coinsurance table td:nth-child(n+4),
+#copayment table td:nth-child(n+4) {
+  white-space: nowrap;
+}
