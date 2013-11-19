@@ -669,12 +669,6 @@ function CoveragePlugin(coverage, coverageSection) {
     }
   }
 
-  // Add authorizations information
-  this.addAuthorizations = function(container) {
-    container = container || this.coverageSection;
-    container.append(that.getAuthorizations());
-  }
-
   //////////////////////////////////////////////////////////////
   // Functions that gets the tables with parsed content below
   //////////////////////////////////////////////////////////////
@@ -883,25 +877,6 @@ function CoveragePlugin(coverage, coverageSection) {
       });
     }
     return(master_div);
-  }
-
-  // Gets all the authorization information
-  this.getAuthorizations = function() {
-    var plan_financials = that.getPlanFinancials;
-    if (that.covearge.hasServices()) {
-      var services = this.coverage.getServices();
-      $.each(services, function(idx, service) {
-
-      });
-    }
-  }
-
-  this.buildAuhorizations = function(financials) {
-    if (financials) {
-      $.each(financials, function(idx, financial) {
-
-      });
-    }
   }
 
   //////////////////////////////////////////////////////////////

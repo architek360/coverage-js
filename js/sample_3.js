@@ -125,36 +125,39 @@ buildCoverageHTML = function (coverage) {
 
   // We build a bootstrap tab to display the services and plan financial all together
   var financials = $("<ul/>").addClass("nav nav-tabs");
-  var deductibles_tab = $("<li/>").addClass("active").appendTo(financials);
+  var deductibles_tab = $("<li/>", {id: "deductibles_tab"}).addClass("active").appendTo(financials);
   deductibles_tab.append($("<a/>", {href: "#deductibles", text: "Deductibles"}));
-  var maximums_tab = $("<li/>").appendTo(financials);
+  var maximums_tab = $("<li/>", {id: "maximums_tab"}).appendTo(financials);
   maximums_tab.append($("<a/>", {href: "#maximums", text: "Maximums"}));
-  var coinsurance_tab = $("<li/>").appendTo(financials);
+  var coinsurance_tab = $("<li/>", {id: "coinsurance_tab"}).appendTo(financials);
   coinsurance_tab.append($("<a/>", {href: "#coinsurance", text: "Coinsurance"}));
-  var copayment_tab = $("<li/>").appendTo(financials);
+  var copayment_tab = $("<li/>", {id: "copayment_tab"}).appendTo(financials);
   copayment_tab.append($("<a/>", {href: "#copayment", text: "Copayment"}));
-  var authorizations_tab = $("<li/>").appendTo(financials);
-  authorizations_tab.append($("<a/>", {href: "#authorizations", text: "Authorizations"}));
+  var additional_policies_tab = $("<li/>", {id: "additional_policies_tab"}).appendTo(financials);
+  additional_policies_tab.append($("<a/>", {href: "#additional_policies", text: "Additional Policies"}));
 
   var tab_content = $("<div/>").addClass("tab-content");
   var deductibles = $("<div/>", {id: "deductibles"}).addClass("tab-pane active").appendTo(tab_content);
-  var maximums = $("<div/>", {id: "maximums"}).addClass("tab-pane active").appendTo(tab_content);
-  var coinsurance = $("<div/>", {id: "coinsurance"}).addClass("tab-pane active").appendTo(tab_content);
-  var copayment = $("<div/>", {id: "copayment"}).addClass("tab-pane active").appendTo(tab_content);
-  var authorizations = $("<div/>", {id: "authorizations"}).addClass("tab-pane active").appendTo(tab_content);
+  var maximums = $("<div/>", {id: "maximums"}).addClass("tab-pane").appendTo(tab_content);
+  var coinsurance = $("<div/>", {id: "coinsurance"}).addClass("tab-pane").appendTo(tab_content);
+  var copayment = $("<div/>", {id: "copayment"}).addClass("tab-pane").appendTo(tab_content);
+  var additional_policies = $("<div/>", {id: "additional_policies"}).addClass("tab-pane").appendTo(tab_content);
 
   plugin.addDeductibles(deductibles);
   plugin.addMaximumMinimum(maximums);
   plugin.addCoinsurance(coinsurance);
   plugin.addCopayment(copayment);
-  //plugin.addAuthorizations(authorizations);
+  plugin.addAdditionalInsurancePolicies(additional_policies);
+  if ($(additional_policies).find('table').length == 0) {
+    additional_policies.remove();
+    additional_policies_tab.remove();
+  }
 
   // Append the financials to the container
   var tab = $("<div/>").addClass("financials_tab").append(financials).append(tab_content);
   container.append('<div class="clearfix">&nbsp;</div>').append(tab);
 
   plugin.addPlanDisclaimer();
-  plugin.addAdditionalInsurancePolicies();
 
   var body = $('body');
   var subscriberSection = $("<section/>").addClass('subscriber-section');
@@ -176,6 +179,10 @@ buildCoverageHTML = function (coverage) {
     $.each(insuranceLinks, function (idx, link) {
       additionalInsuranceSection.append(link);
       additionalInsuranceSection.append($("<br/>"));
+      $(link).click(function(e) {
+        e.preventDefault();
+        $("#additional_policies_tab a").trigger('click');
+      });
     });
     additionalInsuranceSection.appendTo(subscriberSection);
   }
