@@ -734,6 +734,25 @@ function CoveragePlugin(coverage, coverageSection) {
     $(table).find('tbody').find("tr").prepend($("<th/>", {text: text}));
   }
 
+  this.sortTable = function (a, b) {
+    var count_a = 0;
+    var count_b = 0;
+    if ($(a).find("td:nth-child(2)").text() == "IN" && $(b).find("td:nth-child(2)").text() == "OUT")
+      return (-1);
+    if ($(a).find("td:nth-child(2)").text() == "OUT" && $(b).find("td:nth-child(2)").text() == "IN")
+      return (1);
+    for (var i = 4; i < 8; i++) {
+      if ($(a).find("td:nth-child(" + i + ")").text() != "")
+        count_a += 1;
+      if ($(b).find("td:nth-child(" + i + ")").text() != "")
+        count_b += 1;
+    }
+    if (count_a < count_b) return 1;
+    if (count_a > count_b) return -1;
+    if ($(a).find("td:nth-child(2)").text() == "IN" && $(b).find("td:nth-child(2)") == "IN") return -1;
+    return 0;
+  }
+
   // Gets the maximum and minimum for the plan and services
   that.getMaximumMinimum = function () {
     var plan_stop_loss = that.coverage.getPlanMaximumMinimum();
@@ -753,6 +772,11 @@ function CoveragePlugin(coverage, coverageSection) {
         $(table).find('tbody').append(rows.remove());
       }
     });
+
+    var rows = $(table).find('tbody').find('tr').remove();
+    rows.sort(this.sortTable);
+    $(table).find("tbody").append(rows);
+
     return(table);
   }
 
@@ -775,6 +799,11 @@ function CoveragePlugin(coverage, coverageSection) {
         $(table).find('tbody').append(rows.remove());
       }
     });
+
+    var rows = $(table).find('tbody').find('tr').remove();
+    rows.sort(this.sortTable);
+    $(table).find("tbody").append(rows);
+
     return(table);
   }
 
@@ -797,6 +826,11 @@ function CoveragePlugin(coverage, coverageSection) {
         $(table).find('tbody').append(rows.remove());
       }
     });
+
+    var rows = $(table).find('tbody').find('tr').remove();
+    rows.sort(this.sortTable);
+    $(table).find("tbody").append(rows);
+
     return(table);
   }
 
@@ -819,6 +853,11 @@ function CoveragePlugin(coverage, coverageSection) {
         $(table).find('tbody').append(rows.remove());
       }
     });
+
+    var rows = $(table).find('tbody').find('tr').remove();
+    rows.sort(this.sortTable);
+    $(table).find("tbody").append(rows);
+
     return(table);
   }
 
