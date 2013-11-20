@@ -726,6 +726,7 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add the service column for the table header
   this.addServiceHeaderColumn = function (table) {
     $(table).find('thead').find("tr:last").prepend($("<th/>", {text: "Service"}));
+    $(table).find('thead').find("tr:first").find("th:first").attr('colspan', 3);
   }
 
   // Add a column to each one of the body rows
