@@ -895,7 +895,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $("<td/>", {html: that.coverage.parseNameAndAddress(person).join("<br/>")}).appendTo(row);
 
     $("<th/>", {text: "Date of Birth"}).appendTo(rowHead);
-    $("<td/>", {text: person['dob']}).appendTo(row);
+    $("<td/>", {text: person['dob'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Gender"}).appendTo(rowHead);
     $("<td/>", {text: that.coverage.parseGender(person['gender'])}).appendTo(row);
@@ -912,10 +912,10 @@ function CoveragePlugin(coverage, coverageSection) {
     var row = $("<tr></tr>").appendTo(tableBody);
 
     $("<th/>", {text: "Name"}).appendTo(rowHead);
-    $("<td/>", {text: insurance['name']}).appendTo(row);
+    $("<td/>", {text: insurance['name'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Insurance Type"}).appendTo(rowHead);
-    $("<td/>", {text: insurance['payer_type_label']}).appendTo(row);
+    $("<td/>", {text: insurance['payer_type_label'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Member Type"}).appendTo(rowHead);
     if (demographics['dependent'] && demographics['dependent']['first_name']) {
@@ -928,9 +928,9 @@ function CoveragePlugin(coverage, coverageSection) {
 
     $("<th/>", {text: "ID"}).appendTo(rowHead);
     if (demographics['dependent'] && demographics['dependent']['member_id'] && demographics['dependent']['member_id'].length > 0)
-      $("<td/>", {text: demographics['dependent']['member_id']}).appendTo(row);
+      $("<td/>", {text: demographics['dependent']['member_id'] || ""}).appendTo(row);
     else if (demographics['subscriber'] && demographics['subscriber']['member_id'] && demographics['subscriber']['member_id'].length > 0)
-      $("<td/>", {text: demographics['subscriber']['member_id']}).appendTo(row);
+      $("<td/>", {text: demographics['subscriber']['member_id'] || ""}).appendTo(row);
     else
       $("<td/>", {text: ''}).appendTo(row);
 
@@ -946,16 +946,16 @@ function CoveragePlugin(coverage, coverageSection) {
     var row = $("<tr></tr>").appendTo(tableBody).addClass("warning");
 
     $("<th/>", {text: "Coverage"}).appendTo(rowHead);
-    $("<td/>", {text: plan['coverage_status_label']}).addClass("coverage-status-text").appendTo(row);
+    $("<td/>", {text: plan['coverage_status_label'] || ""}).addClass("coverage-status-text").appendTo(row);
 
     $("<th/>", {text: "Type"}).appendTo(rowHead);
-    $("<td/>", {text: plan['plan_type_label']}).appendTo(row);
+    $("<td/>", {text: plan['plan_type_label'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Plan Name"}).appendTo(rowHead);
-    $("<td/>", {text: plan['plan_name']}).appendTo(row);
+    $("<td/>", {text: plan['plan_name'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Plan Number"}).appendTo(rowHead);
-    $("<td/>", {text: plan['plan_number']}).appendTo(row);
+    $("<td/>", {text: plan['plan_number'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Additional Information"}).appendTo(rowHead);
     $("<td/>", {html: that.coverage.parseComments(plan['comments']).join("<br/>")}).appendTo(row);
@@ -972,10 +972,10 @@ function CoveragePlugin(coverage, coverageSection) {
     var row = $("<tr></tr>").appendTo(tableBody);
 
     $("<th/>", {text: "Group ID"}).appendTo(rowHead);
-    $("<td/>", {text: subscriber['group_id']}).appendTo(row);
+    $("<td/>", {text: subscriber['group_id'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Group Name"}).appendTo(rowHead);
-    $("<td/>", {text: subscriber['group_name']}).appendTo(row);
+    $("<td/>", {text: subscriber['group_name'] || ""}).appendTo(row);
 
     $("<th/>", {text: "Dates"}).appendTo(rowHead);
 
@@ -1034,7 +1034,7 @@ function CoveragePlugin(coverage, coverageSection) {
         insurance_types.push(policy['insurance_type_label']);
 
       $("<td/>", {text: insurance_types.join(" - ")}).appendTo(row);
-      $("<td/>", {text: policy['coverage_description']}).appendTo(row);
+      $("<td/>", {text: policy['coverage_description'] || ""}).appendTo(row);
       $("<td/>", {html: that.coverage.parseReference(policy['reference']).join("<br/>")}).appendTo(row);
       $("<td/>", {html: that.coverage.parseContactDetails(policy['contact_details']).join("<br/>")}).appendTo(row);
       $("<td/>", {html: that.coverage.parseDates(policy['dates']).join("<br/>")}).appendTo(row);
@@ -1614,7 +1614,7 @@ function CoveragePlugin(coverage, coverageSection) {
           var level = info['level'];
           var amount = that.coverage.parseFinancialAmount(info);
           var additional_information = that.parseFinancialAdditionalInfo(info);
-          var period = info['time_period_label'];
+          var period = info['time_period_label'] || "";
           var col_index = null;
           if (level == "INDIVIDUAL")
             col_index = 2;
@@ -1702,7 +1702,7 @@ function CoveragePlugin(coverage, coverageSection) {
           var level = info['level'];
           var amount = that.coverage.parseFinancialAmount(info);
           var additional_information = that.parseFinancialAdditionalInfo(info);
-          var period = info['time_period_label'];
+          var period = info['time_period_label'] || "";
           var col_index = null;
           if (level == "INDIVIDUAL")
             col_index = 2;
