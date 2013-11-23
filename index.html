@@ -21,871 +21,912 @@
 
 <div class="container">
 
-  <div class="page-header">
-    <h1>Eligible Javascript Components</h1>
-  </div>
+<div class="page-header">
+  <h1>Eligible Javascript Components</h1>
+</div>
 
-  <div class="well">
-    <p>Eligible JS Components is a javascript library that aims to give you an easy way to get
-      <a href="https://www.eligibleapi.com/rest#coverage" target="_blank">Eligible Coverage</a> in your website.</p>
+<div class="well">
+  <p>Eligible JS Components is a javascript library that aims to give you an easy way to get
+    <a href="https://www.eligibleapi.com/rest#coverage" target="_blank">Eligible Coverage</a> in your website.</p>
 
-    <p>The Usage pattern is pretty simple, by using your language of choice, on your web application, you create a
-      Coverage request to our endpoint, so your server side application acts like a proxy doing the request with
-      your secret api key (you don't want to expose the secret api key on the website).</p>
+  <p>The Usage pattern is pretty simple, by using your language of choice, on your web application, you create a
+    Coverage request to our endpoint, so your server side application acts like a proxy doing the request with
+    your secret api key (you don't want to expose the secret api key on the website).</p>
 
-    <p>Once you get the json response, it can be included on your webpage within a hidden div, and from there you can
-      include our js library to do a quick parsing of the response and show it to the user.</p>
+  <p>Once you get the json response, it can be included on your webpage within a hidden div, and from there you can
+    include our js library to do a quick parsing of the response and show it to the user.</p>
 
-    <p>Feel free to modify the library for your own usage, to contribute with new samples or enhancements to the
-      library.</p>
+  <p>You can check our c# demo at
+    <a href="https://github.com/EligibleAPI/ASP.NET-JS-Coverage-Demo" target="_blank">https://github.com/EligibleAPI/ASP.NET-JS-Coverage-Demo</a>,
+    which shows how to make an api request on the backend and use the js library to parse the result.</p>
 
-    <p>Our library needs <a href="http://jquery.com/" target="_blank">jquery</a> to work, an the components
-      uses <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> to render its styles, although you
-      can use your own css styles if you want.</p>
+  <p>Feel free to modify the library for your own usage, to contribute with new samples or enhancements to the
+    library.</p>
 
-    <p>We have prepare for you three samples that can be used out of the box, within your desktop, without the need
-      to setup a backend or any environment setup, any browser will work:
-    <ul>
-      <li><a href="sample_1.html" target="_blank">Sample 1</a> is the simples example of how to usage the js library.
-      </li>
-      <li><a href="sample_2.html" target="_blank">Sample 2</a> still does a simple usage of the js library, but it adds
-        some customization mostly with CSS.
-      </li>
-      <li><a href="sample_3.html" target="_blank">Sample 3</a> shows a complex usage of the library.</li>
-    </ul>
-    </p>
+  <p>Our library needs <a href="http://jquery.com/" target="_blank">jquery</a> to work, an the components
+    uses <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> to render its styles, although you
+    can use your own css styles if you want.</p>
 
-    <p>You can also check <a href="sse_example.html">the server side example</a> that shows how a view can be rendered
-      from your web framework, and we are in the progress of building some backend app with some simple examples.</p>
-  </div>
-
-
-  <h1>Library Architecture</h1>
-
-  <p>This library has been built by using twitter bootstrap and jquery. We provide two classes for your usage,
-    and we have one intern object and class which are used from the samples to show our api parsing from your
-    browser.</p>
-
-  <p><strong>Coverage</strong> is the base class for Coverage Parsing, the first parameter should be
-    the json answer from Eligible, and it provides many different utility and check functions.</p>
-
-  <p><strong>CoveragePlugin</strong> is the class intended for end user usage, which builds the js tables after
-    parsing the coverage answer, and it uses <strong>Coverage</strong> class in their interns for the parsing.</p>
-
-  <p><strong>EligibleEndpoints</strong> is a simple object with two attributes, coverage and demographics, which
-    gives you back the EligibleAPI endpoint for making coverage and demographics requests. You may not need to use
-    this object since its for the own usage of EligibleRequest</p>
-
-  <p><strong>EligibleRequest</strong> is a class wrapper to make requests to EligibleAPI, you may not want to use this
-    class in your project, since we designed it to be used from samples code, and it requires the api key, which should
-    be secretly stored in your server side application, instead of being executed on the client side environment.
-    This class makes an AJAX API Request to Eligible API.
+  <p>We have prepare for you three samples that can be used out of the box, within your desktop, without the need
+    to setup a backend or any environment setup, any browser will work:
+  <ul>
+    <li><a href="sample_1.html" target="_blank">Sample 1</a> is the simples example of how to usage the js library.
+    </li>
+    <li><a href="sample_2.html" target="_blank">Sample 2</a> still does a simple usage of the js library, but it adds
+      some customization mostly with CSS.
+    </li>
+    <li><a href="sample_3.html" target="_blank">Sample 3</a> shows a complex usage of the library.</li>
+  </ul>
   </p>
 
-  <h1>Library Reference</h1>
+  <p>You can also check <a href="sse_example.html">the server side example</a> that shows how a view can be rendered
+    from your web framework, and we are in the progress of building some backend app with some simple examples.</p>
+</div>
 
-  <h3>Coverage Reference</h3>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">Coverage(json)</div>
-    <div class="panel-body">
-      <p>Constructor. It expects one parameter, which is the json answer from EligibleAPI coverage endpoint.</p>
-    </div>
+<h1>Library Architecture</h1>
+
+<p>This library has been built by using twitter bootstrap and jquery. We provide two classes for your usage,
+  and we have one intern object and class which are used from the samples to show our api parsing from your
+  browser.</p>
+
+<p><strong>Coverage</strong> is the base class for Coverage Parsing, the first parameter should be
+  the json answer from Eligible, and it provides many different utility and check functions.</p>
+
+<p><strong>CoveragePlugin</strong> is the class intended for end user usage, which builds the js tables after
+  parsing the coverage answer, and it uses <strong>Coverage</strong> class in their interns for the parsing.</p>
+
+<p><strong>EligibleEndpoints</strong> is a simple object with two attributes, coverage and demographics, which
+  gives you back the EligibleAPI endpoint for making coverage and demographics requests. You may not need to use
+  this object since its for the own usage of EligibleRequest</p>
+
+<p><strong>EligibleRequest</strong> is a class wrapper to make requests to EligibleAPI, you may not want to use this
+  class in your project, since we designed it to be used from samples code, and it requires the api key, which should
+  be secretly stored in your server side application, instead of being executed on the client side environment.
+  This class makes an AJAX API Request to Eligible API.
+</p>
+
+<h1>Library Reference</h1>
+
+<h3>Coverage Reference</h3>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">Coverage(json)</div>
+  <div class="panel-body">
+    <p>Constructor. It expects one parameter, which is the json answer from EligibleAPI coverage endpoint.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasError()</div>
-    <div class="panel-body"><p>Checks if the coverage answer has any error message. Returns true/false.</p></div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasError()</div>
+  <div class="panel-body"><p>Checks if the coverage answer has any error message. Returns true/false.</p></div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">parseError()</div>
+  <div class="panel-body">
+    <p>Gets the error message from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseError()</div>
-    <div class="panel-body">
-      <p>Gets the error message from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasDemographics()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has demographics information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasDemographics()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has demographics information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getDemographics()</div>
+  <div class="panel-body">
+    <p>Gets the demographic information from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getDemographics()</div>
-    <div class="panel-body">
-      <p>Gets the demographic information from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasSubscriber()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has subscriber information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasSubscriber()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has subscriber information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getSubscriber()</div>
+  <div class="panel-body">
+    <p>Gets the subscriber information from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getSubscriber()</div>
-    <div class="panel-body">
-      <p>Gets the subscriber information from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPatient()</div>
+  <div class="panel-body">
+    <p>If the coverage answer has dependent information, it returns the dependent, otherwise, it returns the
+      subscriber.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPatient()</div>
-    <div class="panel-body">
-      <p>If the coverage answer has dependent information, it returns the dependent, otherwise, it returns the
-        subscriber.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasInsurance()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has insurance information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasInsurance()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has insurance information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getInsurance()</div>
+  <div class="panel-body">
+    <p>Gets the insurance information from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getInsurance()</div>
-    <div class="panel-body">
-      <p>Gets the insurance information from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlan()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has plan information (insurance). Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlan()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has plan information (insurance). Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlan()</div>
+  <div class="panel-body">
+    <p>Gets the plan information (insurance) from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlan()</div>
-    <div class="panel-body">
-      <p>Gets the plan information (insurance) from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasFinancials(element)</div>
+  <div class="panel-body">
+    <p>Checks if element has financial information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasFinancials(element)</div>
-    <div class="panel-body">
-      <p>Checks if element has financial information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlanFinancials()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has financial information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlanFinancials()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has financial information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanFinancials()</div>
+  <div class="panel-body">
+    <p>Gets the financials for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanFinancials()</div>
-    <div class="panel-body">
-      <p>Gets the financials for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasMaximumMinimum(stop_loss)</div>
+  <div class="panel-body">
+    <p>Checks if stop_loss has maximum and minimum information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasMaximumMinimum(stop_loss)</div>
-    <div class="panel-body">
-      <p>Checks if stop_loss has maximum and minimum information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlanMaximumMinimum()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has maximum and minimum information for the plan. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlanMaximumMinimum()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has maximum and minimum information for the plan. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanMaximumMinimum()</div>
+  <div class="panel-body">
+    <p>Gets the maximum and minimum information for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanMaximumMinimum()</div>
-    <div class="panel-body">
-      <p>Gets the maximum and minimum information for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasDeductibles(deductible)</div>
+  <div class="panel-body">
+    <p>Checks if deductible has any deductible information on it. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasDeductibles(deductible)</div>
-    <div class="panel-body">
-      <p>Checks if deductible has any deductible information on it. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlanDeductibles()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has deductible information for the plan. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlanDeductibles()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has deductible information for the plan. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanDeductibles()</div>
+  <div class="panel-body">
+    <p>Gets the deductible information for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanDeductibles()</div>
-    <div class="panel-body">
-      <p>Gets the deductible information for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasCoinsurance(coinsurance)</div>
+  <div class="panel-body">
+    <p>Checks if coinsurance has coinsurance information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasCoinsurance(coinsurance)</div>
-    <div class="panel-body">
-      <p>Checks if coinsurance has coinsurance information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlanCoinsurance()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has coinsurance information for the plan.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlanCoinsurance()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has coinsurance information for the plan.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanCoinsurance()</div>
+  <div class="panel-body">
+    <p>Gets the coinsurance information for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanCoinsurance()</div>
-    <div class="panel-body">
-      <p>Gets the coinsurance information for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasCopayment(copayment)</div>
+  <div class="panel-body">
+    <p>Checks if copayment has copayment information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasCopayment(copayment)</div>
-    <div class="panel-body">
-      <p>Checks if copayment has copayment information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasPlanCopayment()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has copayment information for the plan.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasPlanCopayment()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has copayment information for the plan.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanCopayment()</div>
+  <div class="panel-body">
+    <p>Gets the copayment information for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanCopayment()</div>
-    <div class="panel-body">
-      <p>Gets the copayment information for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasDisclaimer(disclaimer)</div>
+  <div class="panel-body">
+    <p>Checks if disclaimer has disclaimer information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasDisclaimer(disclaimer)</div>
-    <div class="panel-body">
-      <p>Checks if disclaimer has disclaimer information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanDisclaimer()</div>
+  <div class="panel-body">
+    <p>Gets the disclaimer information for the plan within the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanDisclaimer()</div>
-    <div class="panel-body">
-      <p>Gets the disclaimer information for the plan within the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasAdditionalInsurancePolicies()</div>
+  <div class="panel-body">
+    <p></p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasAdditionalInsurancePolicies()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getAdditionalInsurancePolicies()</div>
+  <div class="panel-body">
+    <p>Gets the additional insurance policies from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getAdditionalInsurancePolicies()</div>
-    <div class="panel-body">
-      <p>Gets the additional insurance policies from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">hasServices()</div>
+  <div class="panel-body">
+    <p>Checks if the coverage answer has services information. Returns true/false.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">hasServices()</div>
-    <div class="panel-body">
-      <p>Checks if the coverage answer has services information. Returns true/false.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getServices()</div>
+  <div class="panel-body">
+    <p>Gets the service information from the coverage answer.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getServices()</div>
-    <div class="panel-body">
-      <p>Gets the service information from the coverage answer.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseSubscriberInfo(subscriber)</div>
+  <div class="panel-body">
+    <p>Returns the Member ID, Group ID, Group Name, First and Last Name from the subscriber in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseSubscriberInfo(subscriber)</div>
-    <div class="panel-body">
-      <p>Returns the Member ID, Group ID, Group Name, First and Last Name from the subscriber in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseContactDetails(contactDetails)</div>
+  <div class="panel-body">
+    <p>Returns First and Last Name, Address, Identification Codes and Contact Information in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseContactDetails(contactDetails)</div>
-    <div class="panel-body">
-      <p>Returns First and Last Name, Address, Identification Codes and Contact Information in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseContacts(contacts)</div>
+  <div class="panel-body">
+    <p>Returns the contat information from contacts in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseContacts(contacts)</div>
-    <div class="panel-body">
-      <p>Returns the contat information from contacts in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseNameAndAddress(person)</div>
+  <div class="panel-body">
+    <p>Returns the name and address parsed from person in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseNameAndAddress(person)</div>
-    <div class="panel-body">
-      <p>Returns the name and address parsed from person in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseName(data)</div>
+  <div class="panel-body">
+    <p>If first and last name are present, it returns them.
+      If only first name is present, it returns the first name.
+      If only last name is present, it returns the last name.
+      Otherwise, it returns an empty string.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseName(data)</div>
-    <div class="panel-body">
-      <p>If first and last name are present, it returns them.
-        If only first name is present, it returns the first name.
-        If only last name is present, it returns the last name.
-        Otherwise, it returns an empty string.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseAddress(addressData)</div>
+  <div class="panel-body">
+    <p>Returns the Street Line 1, Street Line 2, City, State and ZIP from the addressData in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseAddress(addressData)</div>
-    <div class="panel-body">
-      <p>Returns the Street Line 1, Street Line 2, City, State and ZIP from the addressData in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseGender(gender)</div>
+  <div class="panel-body">
+    <p>Returns Male, Female or an empty String based on gender code.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseGender(gender)</div>
-    <div class="panel-body">
-      <p>Returns Male, Female or an empty String based on gender code.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseComments(comments)</div>
+  <div class="panel-body">
+    <p>Returns the comments in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseComments(comments)</div>
-    <div class="panel-body">
-      <p>Returns the comments in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseDates(dates)</div>
+  <div class="panel-body">
+    <p>Returns the dates parsed with their type and value in an Array.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseDates(dates)</div>
-    <div class="panel-body">
-      <p>Returns the dates parsed with their type and value in an Array.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseSpecificDates(dates, type)</div>
+  <div class="panel-body">
+    <p>Parses the specific "type" date from it, by using their _begin and _end nomenclature.<br/>
+      <strong>parseSpecificDates(plan['dates'], "plan")</strong> will check for plan_begin, plan_end and plan types
+      from the date and return it with the right format.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseSpecificDates(dates, type)</div>
-    <div class="panel-body">
-      <p>Parses the specific "type" date from it, by using their _begin and _end nomenclature.<br/>
-        <strong>parseSpecificDates(plan['dates'], "plan")</strong> will check for plan_begin, plan_end and plan types
-        from the date and return it with the right format.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">formatDates(start, end)</div>
+  <div class="panel-body">
+    <p>Returns <strong>start to end</strong>, <strong>start</strong> or <strong>end</strong> by checking if any of
+      the parameters start and end are empty or undefined.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">formatDates(start, end)</div>
-    <div class="panel-body">
-      <p>Returns <strong>start to end</strong>, <strong>start</strong> or <strong>end</strong> by checking if any of
-        the parameters start and end are empty or undefined.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseFinancialAmount(info)</div>
+  <div class="panel-body">
+    <p>It expects a financial json information in the variable <strong>info</strong>, and it either returns the amount
+      in U$S or the
+      percent value by checking if any of them are present.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseFinancialAmount(info)</div>
-    <div class="panel-body">
-      <p>It expects a financial json information in the variable <strong>info</strong>, and it either returns the amount in U$S or the
-        percent value by checking if any of them are present.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseAmount(amount)</div>
+  <div class="panel-body">
+    <p>By checking the <strong>amount</strong> variable, it returns the money amount with a format
+      <strong>$ XX.XX</strong></p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseAmount(amount)</div>
-    <div class="panel-body">
-      <p>By checking the <strong>amount</strong> variable, it returns the money amount with a format
-        <strong>$ XX.XX</strong></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseReference(reference)</div>
+  <div class="panel-body">
+    <p>Returns each one of the references in the variable <strong>reference</strong> as an Array, with their
+      label and number parsed for each element.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseReference(reference)</div>
-    <div class="panel-body">
-      <p>Returns each one of the references in the variable <strong>reference</strong> as an Array, with their
-        label and number parsed for each element.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">coverageStatus(data)</div>
+  <div class="panel-body">
+    <p>If coverage status is between 1 and 5, it returns "Active", otherwise it returns "Inactive".</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">coverageStatus(data)</div>
-    <div class="panel-body">
-      <p>If coverage status is between 1 and 5, it returns "Active", otherwise it returns "Inactive".</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">isPresent(object)</div>
+  <div class="panel-body">
+    <p>Checks if <strong>object</strong> is empty by comparing it with an undefined type, null or empty string.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">isPresent(object)</div>
-    <div class="panel-body">
-      <p>Checks if <strong>object</strong> is empty by comparing it with an undefined type, null or empty string.</p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">capitalise(string)</div>
+  <div class="panel-body">
+    <p>Returns the first character of <strong>string</strong> in upper case, and the rest on down case.</p>
   </div>
-
-  <div class="panel panel-primary">
-    <div class="panel-heading">capitalise(string)</div>
-    <div class="panel-body">
-      <p>Returns the first character of <strong>string</strong> in upper case, and the rest on down case.</p>
-    </div>
-  </div>
+</div>
 
 
-  <h3>CoveragePlugin Reference</h3>
+<h3>CoveragePlugin Reference</h3>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">CoveragePlugin(coverage, coverageSection)</div>
-    <div class="panel-body">
-      <p>Constructor. First element should be a Coverage object, and the second object is the container where all
+<div class="panel panel-primary">
+  <div class="panel-heading">CoveragePlugin(coverage, coverageSection)</div>
+  <div class="panel-body">
+    <p>Constructor. First element should be a Coverage object, and the second object is the container where all
       the elements that this object builds, are appened. If you don't provide a html container, a default
       element <strong>&lt;section class="coverage-section" /&gt;</strong> will be used.</p>
-    </div>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildPanelUI(title, content)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildPanelUI(title, content)</div>
+  <div class="panel-body">
+    <p>It builds a twitter bootstrap component, with the <strong>title</strong> and <strong>content</strong>
+      provided.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addDemographicsSection(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addDemographicsSection(container)</div>
+  <div class="panel-body">
+    <p>Add demographics panel to the provided container. If the container is null, it adds it to the
+      CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addInsuranceSection1(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addInsuranceSection1(container)</div>
+  <div class="panel-body">
+    <p>Add Insurance Section 1 to the provided container. If the container is null, it adds it to the
+      CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addInsuranceSection2(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addInsuranceSection2(container)</div>
+  <div class="panel-body">
+    <p>Add Insurance Section 2 to the provided container. If the container is null, it adds it to the
+      CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addInsuranceSection3(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addInsuranceSection3(container)</div>
+  <div class="panel-body">
+    <p>Add Insurance Section 3 to the provided container. If the container is null, it adds it to the
+      CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanMaximumMinimumDeductibles(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanMaximumMinimumDeductibles(container)</div>
+  <div class="panel-body">
+    <p>Add Maximum and Minimum and Deductibles information for the plan to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanMaximumMinimum(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanMaximumMinimum(container)</div>
+  <div class="panel-body">
+    <p>Add Maximum and Minimum information for the plan to the provided container. If the container is null,
+      it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanDeductibles(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanDeductibles(container)</div>
+  <div class="panel-body">
+    <p>Add Deductibles information for the plan to the provided container. If the container is null,
+      it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanCoinsurance(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanCoinsurance(container)</div>
+  <div class="panel-body">
+    <p>Add Coinsurance information for the plan to the provided container. If the container is null,
+      it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanCopayment(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanCopayment(container)</div>
+  <div class="panel-body">
+    <p>Add Copayment information for the plan to the provided container. If the container is null,
+      it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addPlanDisclaimer(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addPlanDisclaimer(container)</div>
+  <div class="panel-body">
+    <p>Add Disclaimer information for the plan to the provided container. If the container is null,
+      it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addMaximumMinimum(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addMaximumMinimum(container)</div>
+  <div class="panel-body">
+    <p>Add Maximum and Minimum information for the plan and services to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addDeductibles(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addDeductibles(container)</div>
+  <div class="panel-body">
+    <p>Add Deductible information for the plan and services to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addCoinsurance(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addCoinsurance(container)</div>
+  <div class="panel-body">
+    <p>Add Coinsurance information for the plan and services to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addCopayment(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addCopayment(container)</div>
+  <div class="panel-body">
+    <p>Add Copayment information for the plan and services to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addAdditionalInsurancePolicies(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addAdditionalInsurancePolicies(container)</div>
+  <div class="panel-body">
+    <p>Add Additional Insurances Policies to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addGenericServices(container)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addGenericServices(container)</div>
+  <div class="panel-body">
+    <p>Add Generic Services Information to the provided container. If the container
+      is null, it adds it to the CoveragePlugin default container.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getDemographicsSection()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getDemographicsSection()</div>
+  <div class="panel-body">
+    <p>Gets a table with Demographic information</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getInsuranceSection1()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getInsuranceSection1()</div>
+  <div class="panel-body">
+    <p>Gets a table with Insurance Section 1</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getInsuranceSection2()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getInsuranceSection2()</div>
+  <div class="panel-body">
+    <p>Gets a table with Insurance Section 2</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getInsuranceSection3()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getInsuranceSection3()</div>
+  <div class="panel-body">
+    <p>Gets a table with Insurance Section 3</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanMaximumMinimumDeductibles()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanMaximumMinimumDeductibles()</div>
+  <div class="panel-body">
+    <p>Gets a table with Maximum, Minimum and Deductibles information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanMaximumMinimum()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanMaximumMinimum()</div>
+  <div class="panel-body">
+    <p>Gets a table with Maximum and Minimum information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanDeductibles()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanDeductibles()</div>
+  <div class="panel-body">
+    <p>Gets a table with Deductible information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanCoinsurance()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanCoinsurance()</div>
+  <div class="panel-body">
+    <p>Gets a table with Coinsurance information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanCopayment()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanCopayment()</div>
+  <div class="panel-body">
+    <p>Gets a table with Copayment information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getPlanDisclaimer()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getPlanDisclaimer()</div>
+  <div class="panel-body">
+    <p>Gets a table with Disclaimer information for the plan</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addServiceHeaderColumn(table)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addServiceHeaderColumn(table)</div>
+  <div class="panel-body">
+    <p>This is used internally by the library to add a column to the header with the text Services and update the
+      span of the column from 2 to 3</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">prependBodyColumn(table, text)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">prependBodyColumn(table, text)</div>
+  <div class="panel-body">
+    <p>This is used internally by the library to add a column to the body of <strong>table</strong> with
+      the content <strong>text</strong></p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">sortTable(a, b)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">sortTable(a, b)</div>
+  <div class="panel-body">
+    <p>This is used internally by the library to sort a table based on the IN - OUT text and the amount of columns
+      filled per row</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getMaximumMinimum()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getMaximumMinimum()</div>
+  <div class="panel-body">
+    <p>Gets a table with Maximum and Minimum information for the plan and services</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getDeductibles()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getDeductibles()</div>
+  <div class="panel-body">
+    <p>Gets a table with Deductible information for the plan and services</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getCoinsurance()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getCoinsurance()</div>
+  <div class="panel-body">
+    <p>Gets a table with Coinsurance information for the plan and services</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getCopayment()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getCopayment()</div>
+  <div class="panel-body">
+    <p>Gets a table with Copayment information for the plan and services</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getAdditionalInsuranceLinks()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getAdditionalInsuranceLinks()</div>
+  <div class="panel-body">
+    <p>Gets an Array with links to each one of the additional insurance companies</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getAdditionalInsurancePolicies()</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getAdditionalInsurancePolicies()</div>
+  <div class="panel-body">
+    <p>Gets a table with Additional Insurance Policies</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getGenericServices(columns)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getGenericServices(columns)</div>
+  <div class="panel-body">
+    <p>Gets a table with Generic Services information</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildDemographics(person)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildDemographics(person)</div>
+  <div class="panel-body">
+    <p>Builds a table with Demographic information based on the <strong>person</strong> information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildInsuranceSection1(insurance, demographic)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildInsuranceSection1(insurance, demographic)</div>
+  <div class="panel-body">
+    <p>Builds a table with Insurance information based on the <strong>insurance</strong> and
+      <strong>demographic</strong> information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildInsuranceSection2(plan)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildInsuranceSection2(plan)</div>
+  <div class="panel-body">
+    <p>Builds a table with Insurance information based on the <strong>insurance</strong> information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildInsuranceSection3(plan, subscriber)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildInsuranceSection3(plan, subscriber)</div>
+  <div class="panel-body">
+    <p>Builds a table with Insurance information based on the <strong>plan</strong> and
+      <strong>subscriber</strong> information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildAdditionalInsurancePolicies(additionalPolicies)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildAdditionalInsurancePolicies(additionalPolicies)</div>
+  <div class="panel-body">
+    <p>Builds a table with Additional Policies information based on the <strong>additionalPolicies</strong>
+      information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildMaximumMinimumDeductibles(data)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildMaximumMinimumDeductibles(data)</div>
+  <div class="panel-body">
+    <p>Builds a table with Maximum, Minimum and Deductible information based on the <strong>data</strong>
+      information provided</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildDeductibles(data, headers)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildDeductibles(data, headers)</div>
+  <div class="panel-body">
+    <p>Builds a table with Deductible information based on the <strong>data</strong> information provided.
+      If <strong>headers</strong> is false, the table doesn't add any header information.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildMaximumMinimum(data, headers)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildMaximumMinimum(data, headers)</div>
+  <div class="panel-body">
+    <p>Builds a table with Maximum and Minimum information based on the <strong>data</strong> information provided.
+      If <strong>headers</strong> is false, the table doesn't add any header information.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildCoinsurance(data, headers)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildCoinsurance(data, headers)</div>
+  <div class="panel-body">
+    <p>Builds a table with Coinsurance information based on the <strong>data</strong> information provided.
+      If <strong>headers</strong> is false, the table doesn't add any header information.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildCopayment(data, headers)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildCopayment(data, headers)</div>
+  <div class="panel-body">
+    <p>Builds a table with Copayment information based on the <strong>data</strong> information provided.
+      If <strong>headers</strong> is false, the table doesn't add any header information.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildDisclaimer(data)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildDisclaimer(data)</div>
+  <div class="panel-body">
+    <p>Builds a table with Disclaimer information based on the <strong>data</strong> information provided.
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">parseFinancialAdditionalInfo(info)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">parseFinancialAdditionalInfo(info)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. Gets an Array with information about a financial
+      json structure provided by <strong>info</strong></p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">getFinancialColIdx(level, individual_idx, family_idx)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">getFinancialColIdx(level, individual_idx, family_idx)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. If <strong>level</strong> is "INDIVIDUAL", it returns
+      <strong>individual_idx</strong>, otherwise it returns <strong>family_idx</strong></p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">findFinancialRowIdx(rows, network, additionl_information, col_index)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">findFinancialRowIdx(rows, network, additional_information, col_index)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. If the network and additional_information is matched in a row,
+      and the column in the index col_index is empty, it returns the row, otherwise it returns null.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildFinancialEmptyRow(network, cols)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildFinancialEmptyRow(network, cols)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. It builds a row with the network information as the first
+      column, and the rest of them as empty columns. It builds <strong>cols</strong> amount of columns for the row.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">addAdditionalInfoToFinancialRow(row, additional_information)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">addAdditionalInfoToFinancialRow(row, additional_information)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. If the row additional information is empty, it adds the
+      <strong>additional_information</strong> to the column.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildGenericFinancials(data)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildGenericFinancials(data)</div>
+  <div class="panel-body">
+    <p>Builds a table with generic financial information for the <strong>data</strong>.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildGenericFinancialRows(data, network, level)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildGenericFinancialRows(data, network, level)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. Gets financial rows from <strong>data</strong> by matching
+      both the <strong>network</strong> and <strong>level</strong> in the <strong>data</strong> structure.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">buildGenericFinancialRow(network, level, type, period, item)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">buildGenericFinancialRow(network, level, type, period, item)</div>
+  <div class="panel-body">
+    <p>This function is used internally by the library. It builds a row by using the parameters provided.</p>
   </div>
+</div>
 
-  <h3>EligibleEndpoints reference</h3>
+<h3>EligibleEndpoints reference</h3>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">coverage</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">coverage</div>
+  <div class="panel-body">
+    <p>Returns the eligible coverage endpoint.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">demographics</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">demographics</div>
+  <div class="panel-body">
+    <p>Returns the eligible demographics endpoint.</p>
   </div>
+</div>
 
-  <h3>EligibleRequest reference</h3>
+<h3>EligibleRequest reference</h3>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">EligibleRequest(endpoint, successCallback, errorCallback, debug)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">EligibleRequest(endpoint, successCallback, errorCallback, debug)</div>
+  <div class="panel-body">
+    <p>Constructor. <strong>endpoint</strong> is the Eligible endopoint the request, <strong>successCallback</strong>
+    is the callback to be executed if the ajax request is made, <strong>errorCallback</strong> is the callback
+    to be executed if the request fails, and <strong>debug</strong> is a boolean value for debugging purposes.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">objectToUrlParameters(obj)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">objectToUrlParameters(obj)</div>
+  <div class="panel-body">
+    <p>Converts the object <strong>obj</strong> to a query request.</p>
   </div>
+</div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">request(params)</div>
-    <div class="panel-body">
-      <p></p>
-    </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">request(params)</div>
+  <div class="panel-body">
+    <p>Makes an ajax request to Eligible.</p>
   </div>
+</div>
 
 </div>
 
