@@ -4,7 +4,7 @@
 
 .coverage-section {
   width: 95%;
-  min-width: 920px;
+  min-width: 1050px;
   margin: 0 auto;
 }
 
@@ -34,6 +34,11 @@
   border-bottom: none !important;
 }
 
+/* Bootstrap override to prevent rows overflow */
+.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
+  word-wrap: break-word;
+  max-width: 235px;
+}
 
 .subscriber-section {
   width: 36%;
