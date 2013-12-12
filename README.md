@@ -1,6 +1,6 @@
 ### Coverage.js by [Eligible] (https://www.eligibleapi.com) 
 
-Coverage.js is a javascript library that aims to let you integrate a (https://www.eligibleapi.com) Healthcare Eligibility and Benefit report with access to over 1000+ insurance companies into your system in less than an hour.   
+Coverage.js is a javascript library that aims to let you integrate a traditional Healthcare Eligibility and Benefit report with access to over 1000+ insurance companies into your system in less than an hour.   
 
 ### How it works
 
