@@ -9,7 +9,7 @@ The Usage pattern is pretty simple, by using your language of choice, on your we
 Once you get the json response, it can be included on your webpage within a hidden div, and from there you can include our js library to do a quick parsing of the response and show it to the user.
 
 ### Dependencies
-Our library needs jquery to work, and the components uses Twitter Bootstrap to render its styles, although you can use your own css styles if you want.
+Our library requires jquery to work, and the components use Twitter Bootstrap to render its styles, although you can use your own css styling if you prefer.
 
 ### Sample apps
 
