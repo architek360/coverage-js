@@ -6,7 +6,7 @@ Coverage.js is a javascript library that aims to give you an easy way to get an 
 
 The Usage pattern is pretty simple, by using your language of choice, on your web application, you create a [Coverage] (https://eligibleapi.com/rest#retrieve-coverage) request to our endpoint, so your server side application acts like a proxy doing the request with your secret api key (you don't want to expose the secret api key on the website).
 
-Once you get the json response, it can be included on your webpage within a hidden div, and from there you can include our js library to do a quick parsing of the response and show it to the user.
+Once you get the json response, it can be included on your webpage within a hidden div, and from there you can include our js library to do a quick parsing and show your user a classic Healthcare Eligibility & Benefit report.
 
 ### Dependencies
 Our library requires jquery to work, and the components use Twitter Bootstrap to render its styles, although you can use your own css styling if you prefer.
