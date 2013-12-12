@@ -11,6 +11,20 @@ Once you get the json response, it can be included on your webpage within a hidd
 ### Dependencies
 Our library requires jquery to work, and the components use Twitter Bootstrap to render its styles, although you can use your own css styling if you prefer.
 
+
+### Information contained in report
+
+* Active / Inactive Health insurance plan status
+* Plan beginning and end dates
+* Plan Name and Plan type (PPO, HMO, POS, OPEN ACCESS)
+* Payer type (Primary, Secondary, Medicare Part A, Medicare Advantage, Vision)
+* Group/Employer information
+* Deductible and Out of pocket Maximums and remaining
+* Demographics for scrubbing of common data entry errors
+* Coordination of benefits - for when more than one health insurance company is found per patient.
+* Coinsurance, copayment, and auth information by service type. 
+
+
 ### Sample apps
 
 You can check our [c# demo] (https://github.com/EligibleAPI/ASP.NET-JS-Coverage-Demo) and [rails demo] (https://github.com/eligibleapi/Rails-JS-Coverage-Demo), which shows how to make an API request on the backend and use the js library to parse the result.
