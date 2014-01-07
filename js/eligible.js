@@ -1877,6 +1877,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $("<th/>", {text: "Type"}).appendTo(rowHead);
     $("<th/>", {text: "Value"}).appendTo(rowHead);
     $("<th/>", {text: "Period"}).appendTo(rowHead);
+    $("<th/>", {text: "Authorization Required"}).appendTo(rowHead);
     $("<th/>", {text: "Additional Information"}).appendTo(rowHead);
 
     // 1st In Network Individual
@@ -1936,7 +1937,7 @@ function CoveragePlugin(coverage, coverageSection) {
         if (item['remainings'] && item['remainings'][network] && item['remainings'][network].length > 0) {
           $.each(item['remainings'][network], function (idx, info) {
             if (info['level'] == level) {
-              rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', info));
+              rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', '-', info));
             }
           });
         }
@@ -1944,7 +1945,7 @@ function CoveragePlugin(coverage, coverageSection) {
         if (item['totals'] && item['totals'][network] && item['totals'][network].length > 0) {
           $.each(item['totals'][network], function (idx, info) {
             if (info['level'] == level) {
-              rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info));
+              rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info['authorization_required'], info));
             }
           });
         }
@@ -1954,7 +1955,7 @@ function CoveragePlugin(coverage, coverageSection) {
           if (item['percents'][network] && item['percents'][network].length > 0) {
             $.each(item['percents'][network], function (idx, info) {
               if (info['level'] == level) {
-                rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', info));
+                rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', '-', info));
               }
             });
           }
@@ -1962,7 +1963,7 @@ function CoveragePlugin(coverage, coverageSection) {
           if (item['percents'][network] && item['percents'][network].length > 0) {
             $.each(item['percents'][network], function (idx, info) {
               if (info['level'] == level) {
-                rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info));
+                rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info['authorization_required'], info));
               }
             });
           }
@@ -1973,7 +1974,7 @@ function CoveragePlugin(coverage, coverageSection) {
           if (item['amounts'][network] && item['amounts'][network].length > 0) {
             $.each(item['amounts'][network], function (idx, info) {
               if (info['level'] == level) {
-                rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', info));
+                rows.push(that.buildGenericFinancialRow(network, level, key, 'Remain', '-', info));
               }
             });
           }
@@ -1981,7 +1982,7 @@ function CoveragePlugin(coverage, coverageSection) {
           if (item['amounts'][network] && item['amounts'][network].length > 0) {
             $.each(item['amounts'][network], function (idx, info) {
               if (info['level'] == level) {
-                rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info));
+                rows.push(that.buildGenericFinancialRow(network, level, key, info['time_period_label'], info['authorization_required'], info));
               }
             });
           }
@@ -1992,7 +1993,7 @@ function CoveragePlugin(coverage, coverageSection) {
     return(rows);
   };
 
-  this.buildGenericFinancialRow = function (network, level, type, period, item) {
+  this.buildGenericFinancialRow = function (network, level, type, period, authorization, item) {
     var row = $("<tr/>");
     $("<td/>").appendTo(row);
     $("<td/>").appendTo(row);
@@ -2006,6 +2007,12 @@ function CoveragePlugin(coverage, coverageSection) {
     $("<td/>", {text: type}).appendTo(row);
     $("<td/>", {text: that.coverage.parseFinancialAmount(item)}).appendTo(row);
     $("<td/>", {text: period}).appendTo(row);
+    if (authorization === '' || authorization === true || authorization === null)
+      $("<td/>", {text: 'Yes'}).appendTo(row);
+    else if (authorization == '-')
+      $("<td/>", {text: ''}).appendTo(row);
+    else
+      $("<td/>", {text: 'No'}).appendTo(row);
     var additional_information = that.parseFinancialAdditionalInfo(item);
     $("<td/>", {html: additional_information.join("</br>")}).appendTo(row);
 
