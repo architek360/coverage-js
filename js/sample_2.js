@@ -112,7 +112,11 @@ var successCallback = function (data) {
 buildError = function (error) {
   $(".coverage-section").remove();
   var coverageSection = $("<section/>").addClass("coverage-section");
-  var h1 = $("<h1/>", {text: error['reject_reason_description']}).appendTo(coverageSection);
+  if (error['details'].indexOf("Payer id submitted") !== -1) {
+    var h1 = $("<h1/>", {text: error['details']}).appendTo(coverageSection);
+  } else {
+    var h1 = $("<h1/>", {text: error['reject_reason_description']}).appendTo(coverageSection);
+  }
   var body = $('body');
   coverageSection.appendTo(body);
 }

@@ -91,6 +91,8 @@ var errorCallback = function (xhr, textStatus, errorThrown) {
   // Check for NPI on errorThrown, since it may be an enrollment issue (https://eligibleapi.com/rest#enrollments)
   if (typeof(errorThrown) === "String" && errorThrown.indexOf("NPI")) {
     alert("You should enroll your NPI though our website");
+  } else if (typeof(errorThrown) === "String" && errorThrown.indexOf("Payer id submitted is not supported")) {
+     alert(errorThrown);
   } else {
     window.alert("Error on request: " + errorThrown);
   }
@@ -112,7 +114,11 @@ var successCallback = function (data) {
 buildError = function (error) {
   $(".coverage-section").remove();
   var coverageSection = $("<section/>").addClass("coverage-section");
-  var h1 = $("<h1/>", {text: error['reject_reason_description']}).appendTo(coverageSection);
+  if (error['details'].indexOf("Payer id submitted") !== -1) {
+    var h1 = $("<h1/>", {text: error['details']}).appendTo(coverageSection);
+  } else {
+    var h1 = $("<h1/>", {text: error['reject_reason_description']}).appendTo(coverageSection);
+  }
   var body = $('body');
   coverageSection.appendTo(body);
 }
