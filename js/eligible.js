@@ -1337,6 +1337,10 @@ function CoveragePlugin(coverage, coverageSection) {
 
     this.removeEmptyFinancialCols(financialColStart, numberOfCols, 4, rowHead, rowHead2, tableBody);
 
+    // Add the left border class to the headers
+    $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
+    $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
+
     return(table);
   }
 
@@ -1356,16 +1360,21 @@ function CoveragePlugin(coverage, coverageSection) {
     var numberOfCols = financialColStart + (levels.length * 4);
 
     if (headers) {
-      $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
-      $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
-      $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
+      $("<th/>", {text: ""}).appendTo(rowHead);
+      $("<th/>", {text: ""}).appendTo(rowHead);
+
+      $.each(levels, function(idx, keyword) {
+        var title = toTitleCase(keyword);
+        var col = $("<th/>", {colSpan: 2, text: title}).addClass("text-center right-grey-border").appendTo(rowHead);
+      });
 
       $("<th/>", {text: "Network"}).appendTo(rowHead2);
       $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
-      $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
-      $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
-      $("<th/>", {text: "Total"}).appendTo(rowHead2);
-      $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+
+      $.each(levels, function(idx, keyword) {
+        $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+        $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+      });
     }
 
     var rows = new Array();
@@ -1386,7 +1395,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("IN", 6);
+              row = that.buildFinancialEmptyRow("IN", numberOfCols);
               rows.push(row);
             }
 
@@ -1408,7 +1417,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("IN", 6);
+              row = that.buildFinancialEmptyRow("IN", numberOfCols);
               rows.push(row);
             }
 
@@ -1431,7 +1440,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("OUT", 6);
+              row = that.buildFinancialEmptyRow("OUT", numberOfCols);
               rows.push(row);
             }
 
@@ -1453,7 +1462,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("OUT", 6);
+              row = that.buildFinancialEmptyRow("OUT", numberOfCols);
               rows.push(row);
             }
 
@@ -1468,7 +1477,7 @@ function CoveragePlugin(coverage, coverageSection) {
     var sortByContent = function (a, b) {
       var count_a = 0;
       var count_b = 0;
-      for (var i = 2; i < 6; i++) {
+      for (var i = financialColStart; i < numberOfCols; i++) {
         if (a[i].text() != "")
           count_a += 1;
         if (b[i].text() != "")
@@ -1484,6 +1493,14 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(rows, function (idx, row) {
       tableBody.append($("<tr/>", {html: row}));
     });
+
+    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+
+    // Add the left border class to the headers
+    if (headers) {
+      $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
+      $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
+    }
 
     return(table);
   }
@@ -1504,16 +1521,21 @@ function CoveragePlugin(coverage, coverageSection) {
     var numberOfCols = financialColStart + (levels.length * 4);
 
     if (headers) {
-      $("<th/>", {colSpan: 2, text: ""}).appendTo(rowHead);
-      $("<th/>", {colSpan: 2, text: "Individual"}).addClass("text-center right-grey-border left-grey-border").appendTo(rowHead);
-      $("<th/>", {colSpan: 2, text: "Family"}).addClass("text-center right-grey-border").appendTo(rowHead);
+      $("<th/>", {text: ""}).appendTo(rowHead);
+      $("<th/>", {text: ""}).appendTo(rowHead);
+
+      $.each(levels, function(idx, keyword) {
+        var title = toTitleCase(keyword);
+        var col = $("<th/>", {colSpan: 2, text: title}).addClass("text-center right-grey-border").appendTo(rowHead);
+      });
 
       $("<th/>", {text: "Network"}).appendTo(rowHead2);
       $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
-      $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
-      $("<th/>", {text: "Remaining"}).appendTo(rowHead2);
-      $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
-      $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+
+      $.each(levels, function(idx, keyword) {
+        $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+        $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
+      });
     }
 
     var rows = new Array();
@@ -1536,7 +1558,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("IN", 6);
+              row = that.buildFinancialEmptyRow("IN", numberOfCols);
               rows.push(row);
             }
 
@@ -1558,7 +1580,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("IN", 6);
+              row = that.buildFinancialEmptyRow("IN", numberOfCols);
               rows.push(row);
             }
 
@@ -1581,7 +1603,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("OUT", 6);
+              row = that.buildFinancialEmptyRow("OUT", numberOfCols);
               rows.push(row);
             }
 
@@ -1603,7 +1625,7 @@ function CoveragePlugin(coverage, coverageSection) {
             if (row_idx != null) {
               row = rows[row_idx];
             } else {
-              row = that.buildFinancialEmptyRow("OUT", 6);
+              row = that.buildFinancialEmptyRow("OUT", numberOfCols);
               rows.push(row);
             }
 
@@ -1618,7 +1640,7 @@ function CoveragePlugin(coverage, coverageSection) {
     var sortByContent = function (a, b) {
       var count_a = 0;
       var count_b = 0;
-      for (var i = 2; i < 6; i++) {
+      for (var i = financialColStart; i < numberOfCols; i++) {
         if (a[i].text() != "")
           count_a += 1;
         if (b[i].text() != "")
@@ -1634,6 +1656,14 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(rows, function (idx, row) {
       tableBody.append($("<tr/>", {html: row}));
     });
+
+    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+
+    // Add the left border class to the headers
+    if (headers) {
+      $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
+      $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
+    }
 
     return(table);
   }
@@ -1666,8 +1696,8 @@ function CoveragePlugin(coverage, coverageSection) {
       $("<th/>", {text: "Additional Information"}).appendTo(rowHead2);
 
       $.each(levels, function(idx, keyword) {
-        $("<th/>", {text: "Period"}).addClass("left-grey-border").appendTo(rowHead2);
-        $("<th/>", {text: "Amount"}).addClass("right-grey-border").appendTo(rowHead2);
+        $("<th/>", {text: "Total"}).addClass("left-grey-border").appendTo(rowHead2);
+        $("<th/>", {text: "Remaining"}).addClass("right-grey-border").appendTo(rowHead2);
       });
     }
 
@@ -1729,6 +1759,12 @@ function CoveragePlugin(coverage, coverageSection) {
     });
 
     this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+
+    // Add the left border class to the headers
+    if (headers) {
+      $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
+      $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
+    }
 
     return(table);
   }
@@ -1825,14 +1861,18 @@ function CoveragePlugin(coverage, coverageSection) {
 
     this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
 
+    // Add the left border class to the headers
+    if (headers) {
+      $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
+      $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
+    }
+
     return(table);
   }
 
   // Build the disclaimer table
   this.buildDisclaimer = function (data) {
     var table = $("<table class=\"table table-hover\"/>");
-//  var tableHead = $("<thead></thead>").appendTo(table);
-//  var rowHead = $("<tr></tr>").appendTo(tableHead);
     var tableBody = $("<tbody/>").appendTo(table);
     var row = $("<tr/>").appendTo(tableBody);
 
@@ -1841,7 +1881,6 @@ function CoveragePlugin(coverage, coverageSection) {
       disclaimer.push(item);
     });
 
-//  $("<th/>", {text: "Disclaimer"}).appendTo(rowHead);
     $("<td/>", {html: disclaimer.join("<br>")}).appendTo(row);
 
     return(table);
@@ -1941,14 +1980,6 @@ function CoveragePlugin(coverage, coverageSection) {
       $(rowHead2).find("th[remove='true']").remove();
     }
     $(tableBody).find("td[remove='true']").remove();
-
-    // Add the left border class to the headers
-    if (rowHead) {
-      $(rowHead).find("th").eq(financialColStart).addClass('left-grey-border');
-    }
-    if (rowHead2) {
-      $(rowHead2).find("th").eq(financialColStart).addClass('left-grey-border');
-    }
   }
 
   // Returns a table with generic information about a service
@@ -2070,12 +2101,6 @@ function CoveragePlugin(coverage, coverageSection) {
     var row = $("<tr/>");
     $("<td/>").appendTo(row);
     $("<td/>").appendTo(row);
-
-    // if (network == 'in_network')
-    //   $("<td/>", {text: 'In'}).appendTo(row);
-    // else
-    //   $("<td/>", {text: 'Out'}).appendTo(row);
-    // $("<td/>", {text: level}).appendTo(row);
 
     $("<td/>", {text: type}).appendTo(row);
     $("<td/>", {text: that.coverage.parseFinancialAmount(item)}).appendTo(row);
