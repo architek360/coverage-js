@@ -30,6 +30,7 @@ var autocomplete_fields = function() {
 
   var api_key = data['api_key'] || data['APIKey'];
   var payer_id = data['payer_id'] || data['PayerID'];
+  var service_type = data['service_type'] || data['service_type_code'] || data['ServiceTypeCode'];
   var service_provider_npi = data['service_provider_npi'] || data['DoctorNPI'];
   var service_provider_last_name = data['service_provider_last_name'] || data['DoctorLastName'];
   var service_provider_first_name = data['service_provider_first_name'] || data['DoctorFirstName'];
@@ -41,6 +42,7 @@ var autocomplete_fields = function() {
   try {
     if (api_key.length > 0) $("#api_key").val(api_key);
     if (payer_id.length > 0) $("#payer_id").val(payer_id);
+    if (service_type.length > 0) $("#service_type").val(service_type);
     if (service_provider_npi.length > 0) $("#provider_npi").val(service_provider_npi);
     if (service_provider_last_name.length > 0) $("#provider_last_name").val(service_provider_last_name);
     if (service_provider_first_name.length > 0) $("#provider_first_name").val(service_provider_first_name);

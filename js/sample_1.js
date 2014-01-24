@@ -51,6 +51,7 @@ var fetchCoverage = function () {
     var params = {
       api_key: $("#api_key").val(),
       payer_id: $("#payer_id").val(),
+      service_type: $("#service_type").val(),
       provider_npi: $("#provider_npi").val(),
       provider_last_name: $("#provider_last_name").val(),
       provider_first_name: $("#provider_first_name").val(),
