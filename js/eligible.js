@@ -738,7 +738,7 @@ function CoveragePlugin(coverage, coverageSection) {
   // Add the service column for the table header
   this.addServiceHeaderColumn = function (table) {
     $(table).find('thead').find("tr:last").prepend($("<th/>", {text: "Service"}));
-    $(table).find('thead').find("tr:first").find("th:first").attr('colspan', 3);
+    $(table).find('thead').find("tr:first").prepend($("<th/>", {text: ""}));
   }
 
   // Add a column to each one of the body rows
@@ -769,7 +769,7 @@ function CoveragePlugin(coverage, coverageSection) {
   that.getMaximumMinimum = function () {
     var plan_stop_loss = that.coverage.getPlanMaximumMinimum();
     var services = that.coverage.getServices();
-    var table = that.buildMaximumMinimum(plan_stop_loss);
+    var table = that.buildMaximumMinimum(plan_stop_loss, true, false);
 
     // Add the service column to the table
     this.addServiceHeaderColumn(table);
@@ -778,7 +778,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var stop_loss = service['financials']['stop_loss'];
-        var temp_table = that.buildMaximumMinimum(stop_loss, false);
+        var temp_table = that.buildMaximumMinimum(stop_loss, false, false);
         that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
@@ -788,6 +788,11 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = $(table).find('tbody').find('tr').remove();
     rows.sort(this.sortTable);
     $(table).find("tbody").append(rows);
+
+    that.removeEmptyFinancialCols(3, levels.length * 2, 2, $(table).find("thead tr")[0], $(table).find("thead tr")[1], $(table).find("tbody"));
+
+    $($(table).find("thead tr")[0]).find("th").eq(3).addClass('left-grey-border');
+    $($(table).find("thead tr")[1]).find("th").eq(3).addClass('left-grey-border');
 
     return(table);
   }
@@ -796,7 +801,7 @@ function CoveragePlugin(coverage, coverageSection) {
   that.getDeductibles = function () {
     var plan_deductibles = that.coverage.getPlanDeductibles();
     var services = that.coverage.getServices();
-    var table = that.buildDeductibles(plan_deductibles);
+    var table = that.buildDeductibles(plan_deductibles, true, false);
 
     // Add the service column to the table
     this.addServiceHeaderColumn(table);
@@ -805,7 +810,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var deductibles = service['financials']['deductible'];
-        var temp_table = that.buildDeductibles(deductibles, false);
+        var temp_table = that.buildDeductibles(deductibles, false, false);
         that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
@@ -815,6 +820,11 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = $(table).find('tbody').find('tr').remove();
     rows.sort(this.sortTable);
     $(table).find("tbody").append(rows);
+
+    that.removeEmptyFinancialCols(3, levels.length * 2, 2, $(table).find("thead tr")[0], $(table).find("thead tr")[1], $(table).find("tbody"));
+
+    $($(table).find("thead tr")[0]).find("th").eq(3).addClass('left-grey-border');
+    $($(table).find("thead tr")[1]).find("th").eq(3).addClass('left-grey-border');
 
     return(table);
   }
@@ -823,7 +833,7 @@ function CoveragePlugin(coverage, coverageSection) {
   that.getCoinsurance = function () {
     var plan_coinsurance = that.coverage.getPlanCoinsurance();
     var services = that.coverage.getServices();
-    var table = that.buildCoinsurance(plan_coinsurance, true);
+    var table = that.buildCoinsurance(plan_coinsurance, true, false);
 
     // Add the service column to the table
     this.addServiceHeaderColumn(table);
@@ -832,7 +842,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var coinsurance = service['financials']['coinsurance'];
-        var temp_table = that.buildCoinsurance(coinsurance, false);
+        var temp_table = that.buildCoinsurance(coinsurance, false, false);
         that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
@@ -842,6 +852,11 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = $(table).find('tbody').find('tr').remove();
     rows.sort(this.sortTable);
     $(table).find("tbody").append(rows);
+
+    that.removeEmptyFinancialCols(3, levels.length * 2, 2, $(table).find("thead tr")[0], $(table).find("thead tr")[1], $(table).find("tbody"));
+
+    $($(table).find("thead tr")[0]).find("th").eq(3).addClass('left-grey-border');
+    $($(table).find("thead tr")[1]).find("th").eq(3).addClass('left-grey-border');
 
     return(table);
   }
@@ -850,7 +865,7 @@ function CoveragePlugin(coverage, coverageSection) {
   that.getCopayment = function () {
     var plan_copayment = that.coverage.getPlanCopayment();
     var services = that.coverage.getServices();
-    var table = that.buildCopayment(plan_copayment);
+    var table = that.buildCopayment(plan_copayment, true, false);
 
     // Add the service column to the table
     this.addServiceHeaderColumn(table);
@@ -859,7 +874,7 @@ function CoveragePlugin(coverage, coverageSection) {
     $.each(services, function (idx, service) {
       if (that.coverage.hasFinancials(service)) {
         var copayment = service['financials']['copayment'];
-        var temp_table = that.buildCopayment(copayment, false);
+        var temp_table = that.buildCopayment(copayment, false, false);
         that.prependBodyColumn(temp_table, service["type_label"]);
         var rows = $(temp_table).find("tbody tr");
         $(table).find('tbody').append(rows.remove());
@@ -869,6 +884,11 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = $(table).find('tbody').find('tr').remove();
     rows.sort(this.sortTable);
     $(table).find("tbody").append(rows);
+
+    that.removeEmptyFinancialCols(3, levels.length * 2, 2, $(table).find("thead tr")[0], $(table).find("thead tr")[1], $(table).find("tbody"));
+
+    $($(table).find("thead tr")[0]).find("th").eq(3).addClass('left-grey-border');
+    $($(table).find("thead tr")[1]).find("th").eq(3).addClass('left-grey-border');
 
     return(table);
   }
@@ -1345,8 +1365,9 @@ function CoveragePlugin(coverage, coverageSection) {
   }
 
   // Build Deductible for plan/service
-  this.buildDeductibles = function (data, headers) {
+  this.buildDeductibles = function (data, headers, removeEmptyColumns) {
     if (headers != false) headers = true;
+    if (removeEmptyColumns != false) removeEmptyColumns = true;
     var table = $("<table class=\"table table-hover\"/>");
     if (headers) {
       var tableHead = $("<thead></thead>").appendTo(table);
@@ -1357,7 +1378,7 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = null;
 
     var financialColStart = 2;
-    var numberOfCols = financialColStart + (levels.length * 4);
+    var numberOfCols = financialColStart + (levels.length * 2);
 
     if (headers) {
       $("<th/>", {text: ""}).appendTo(rowHead);
@@ -1494,7 +1515,8 @@ function CoveragePlugin(coverage, coverageSection) {
       tableBody.append($("<tr/>", {html: row}));
     });
 
-    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+    if (removeEmptyColumns)
+      this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
 
     // Add the left border class to the headers
     if (headers) {
@@ -1506,8 +1528,9 @@ function CoveragePlugin(coverage, coverageSection) {
   }
 
   // Build Maximum, Minimum for plan/service
-  this.buildMaximumMinimum = function (data, headers) {
+  this.buildMaximumMinimum = function (data, headers, removeEmptyColumns) {
     if (headers != false) headers = true;
+    if (removeEmptyColumns != false) removeEmptyColumns = true;
     var table = $("<table class=\"table table-hover\"/>");
     if (headers) {
       var tableHead = $("<thead></thead>").appendTo(table);
@@ -1518,7 +1541,7 @@ function CoveragePlugin(coverage, coverageSection) {
     var rows = null;
 
     var financialColStart = 2;
-    var numberOfCols = financialColStart + (levels.length * 4);
+    var numberOfCols = financialColStart + (levels.length * 2);
 
     if (headers) {
       $("<th/>", {text: ""}).appendTo(rowHead);
@@ -1657,7 +1680,8 @@ function CoveragePlugin(coverage, coverageSection) {
       tableBody.append($("<tr/>", {html: row}));
     });
 
-    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+    if (removeEmptyColumns)
+      this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
 
     // Add the left border class to the headers
     if (headers) {
@@ -1669,8 +1693,9 @@ function CoveragePlugin(coverage, coverageSection) {
   }
 
   // Build coinsurance table
-  this.buildCoinsurance = function (data, headers) {
+  this.buildCoinsurance = function (data, headers, removeEmptyColumns) {
     if (headers != false) headers = true;
+    if (removeEmptyColumns != false) removeEmptyColumns = true;
     var table = $("<table class=\"table table-hover\"/>");
     if (headers) {
       var tableHead = $("<thead></thead>").appendTo(table);
@@ -1758,7 +1783,8 @@ function CoveragePlugin(coverage, coverageSection) {
       tableBody.append($("<tr/>", {html: row}));
     });
 
-    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+    if (removeEmptyColumns)
+      this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
 
     // Add the left border class to the headers
     if (headers) {
@@ -1770,8 +1796,9 @@ function CoveragePlugin(coverage, coverageSection) {
   }
 
   // Build copayment table
-  this.buildCopayment = function (data, headers) {
+  this.buildCopayment = function (data, headers, removeEmptyColumns) {
     if (headers != false) headers = true;
+    if (removeEmptyColumns != false) removeEmptyColumns = true;
     var table = $("<table class=\"table table-hover\"/>");
     if (headers) {
       var tableHead = $("<thead></thead>").appendTo(table);
@@ -1859,7 +1886,8 @@ function CoveragePlugin(coverage, coverageSection) {
       tableBody.append($("<tr/>", {html: row}));
     });
 
-    this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
+    if (removeEmptyColumns)
+      this.removeEmptyFinancialCols(financialColStart, numberOfCols, 2, rowHead, rowHead2, tableBody);
 
     // Add the left border class to the headers
     if (headers) {
