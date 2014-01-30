@@ -40,16 +40,16 @@ var autocomplete_fields = function() {
   var subscriber_dob = data['subscriber_dob'] || data['InsureeDOB'] || data['SubscriberDOB'];
 
   try {
-    if (api_key.length > 0) $("#api_key").val(api_key);
-    if (payer_id.length > 0) $("#payer_id").val(payer_id);
-    if (service_type.length > 0) $("#service_type").val(service_type);
-    if (service_provider_npi.length > 0) $("#provider_npi").val(service_provider_npi);
-    if (service_provider_last_name.length > 0) $("#provider_last_name").val(service_provider_last_name);
-    if (service_provider_first_name.length > 0) $("#provider_first_name").val(service_provider_first_name);
-    if (subscriber_id.length > 0) $("#member_id").val(subscriber_id);
-    if (subscriber_last_name.length > 0) $("#member_last_name").val(subscriber_last_name);
-    if (subscriber_first_name.length > 0) $("#member_first_name").val(subscriber_first_name);
-    if (subscriber_dob.length > 0) $("#member_dob").val(subscriber_dob);
+    if (api_key && api_key.length > 0) $("#api_key").val(api_key);
+    if (payer_id && payer_id.length > 0) $("#payer_id").val(payer_id);
+    if (service_type && service_type.length > 0) $("#service_type").val(service_type);
+    if (service_provider_npi && service_provider_npi.length > 0) $("#provider_npi").val(service_provider_npi);
+    if (service_provider_last_name && service_provider_last_name.length > 0) $("#provider_last_name").val(service_provider_last_name);
+    if (service_provider_first_name && service_provider_first_name.length > 0) $("#provider_first_name").val(service_provider_first_name);
+    if (subscriber_id && subscriber_id.length > 0) $("#member_id").val(subscriber_id);
+    if (subscriber_last_name && subscriber_last_name.length > 0) $("#member_last_name").val(subscriber_last_name);
+    if (subscriber_first_name && subscriber_first_name.length > 0) $("#member_first_name").val(subscriber_first_name);
+    if (subscriber_dob && subscriber_dob.length > 0) $("#member_dob").val(subscriber_dob);
   } catch(ex) {
     console.log(ex);
   }

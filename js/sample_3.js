@@ -172,6 +172,7 @@ buildCoverageHTML = function (coverage) {
   container.append('<div class="clearfix">&nbsp;</div>').append(tab);
 
   plugin.addPlanDisclaimer();
+  plugin.addNonCovered();
 
   var body = $('body');
   var subscriberSection = $("<section/>").addClass('subscriber-section');

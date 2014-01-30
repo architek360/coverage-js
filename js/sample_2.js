@@ -141,6 +141,7 @@ buildCoverageHTML = function(coverage) {
   plugin.addPlanCopayment();
   plugin.addPlanDisclaimer();
   plugin.addAdditionalInsurancePolicies();
+  plugin.addNonCovered();
   plugin.addGenericServices();
 
   var body = $('body');

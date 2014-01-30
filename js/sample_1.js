@@ -140,6 +140,7 @@ buildCoverageHTML = function(coverage) {
   plugin.addPlanCopayment();
   plugin.addPlanDisclaimer();
   plugin.addAdditionalInsurancePolicies();
+  plugin.addNonCovered();
   plugin.addGenericServices();
 
   $('body').append(plugin.coverageSection);

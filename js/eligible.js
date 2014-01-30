@@ -263,6 +263,31 @@ function Coverage(json) {
     return(this.json['plan']['additional_insurance_policies'] && this.json['plan']['additional_insurance_policies'].length > 0);
   }
 
+  // Check if a json element has non covered information
+  this.hasNonCovered = function(noncovered) {
+    return(noncovered && noncovered.length > 0);
+  }
+
+  // Check if the plan has non covered information
+  this.hasPlanNonCovered = function() {
+    if (this.json['plan']['exclusions'] == null) return false;
+    var nonCovered = this.json['plan']['exclusions']['noncovered'];
+    return(this.hasNonCovered(nonCovered));
+  }
+
+  // Check if the services has non covered information
+  this.hasServicesNonCovered = function() {
+    if (!this.hasServices()) return false;
+    var hasNonCovered = false;
+    $.each(this.json['services'], function(idx, item) {
+      if (that.hasNonCovered(item['noncovered'])) {
+        hasNonCovered = true;
+        return false;
+      }
+    });
+    return(hasNonCovered);
+  }
+
   // Return the additional insurance policies for the plan
   this.getAdditionalInsurancePolicies = function () {
     if (!this.hasAdditionalInsurancePolicies()) return null;
@@ -671,6 +696,16 @@ function CoveragePlugin(coverage, coverageSection) {
     }
   }
 
+  // Add non covered information
+  this.addNonCovered = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanNonCovered() || that.coverage.hasServicesNonCovered()) {
+      container.append(
+        that.buildPanelUI('Non Covered',
+          that.getNonCovered()));
+    }
+  }
+
   // Add all the services with generic table format
   this.addGenericServices = function (columns, container) {
     container = container || this.coverageSection;
@@ -925,6 +960,11 @@ function CoveragePlugin(coverage, coverageSection) {
     return(that.buildAdditionalInsurancePolicies(that.coverage.getAdditionalInsurancePolicies()));
   }
 
+  // Gets the non covered table
+  this.getNonCovered = function() {
+    return(that.buildNonCovered(that.coverage.getPlan(), that.coverage.getServices()));
+  }
+
   // Gets all the services with generic table format
   this.getGenericServices = function (columns) {
     columns = columns || 2;
@@ -1115,6 +1155,50 @@ function CoveragePlugin(coverage, coverageSection) {
 
     return(table);
   };
+
+  // Build Non Covered
+  this.buildNonCovered = function(plan, services) {
+    var table = $("<table class=\"table table-hover\"/>");
+    var tableHead = $("<thead></thead>").appendTo(table);
+    var rowHead = $("<tr></tr>").appendTo(tableHead);
+    var tableBody = $("<tbody/>").appendTo(table);
+
+    $("<th/>", {text: "Service"}).appendTo(rowHead);
+    $("<th/>", {text: "Network"}).appendTo(rowHead);
+    $("<th/>", {text: "Coverage"}).appendTo(rowHead);
+    $("<th/>", {text: "Time Period"}).appendTo(rowHead);
+    $("<th/>", {text: "POS"}).appendTo(rowHead);
+    $("<th/>", {text: "Authorization Required"}).appendTo(rowHead);
+    $("<th/>", {text: "Contact"}).appendTo(rowHead);
+    $("<th/>", {text: "Dates"}).appendTo(rowHead);
+    $("<th/>", {text: "Additional Information"}).appendTo(rowHead);
+
+    var parseNonCovered = function(idx, nonCovered) {
+      var row = $("<tr/>").appendTo(tableBody);
+
+      $("<td/>", {text: nonCovered['type_label']}).appendTo(row);
+      $("<td/>", {text: nonCovered['level']}).appendTo(row);
+      $("<td/>", {text: nonCovered['network']}).appendTo(row);
+      $("<td/>", {text: nonCovered['time_period_label'] || ''}).appendTo(row);
+      $("<td/>", {text: nonCovered['pos_label'] || ''}).appendTo(row);
+      $("<td/>", {text: ((nonCovered['authorization_required']) ? 'Yes' : 'No')}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseContactDetails(nonCovered['contact_details']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseDates(nonCovered['dates']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseComments(nonCovered['comments']).join("<br/>")}).appendTo(row);
+    }
+
+    if (that.coverage.hasPlanNonCovered()) {
+      $.each(plan['exclusions']['noncovered'], parseNonCovered);
+    }
+    if (that.coverage.hasServicesNonCovered()) {
+      $.each(services, function(i, item) {
+        if (that.coverage.hasNonCovered(item['noncovered']))
+          $.each(item['noncovered'], parseNonCovered);
+      });
+    }
+
+    return(table);
+  }
 
   // Build Maximum, Minimum and Deductible for plan
   this.buildMaximumMinimumDeductibles = function (data) {
