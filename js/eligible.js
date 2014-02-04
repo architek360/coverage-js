@@ -126,6 +126,19 @@ function Coverage(json) {
     }
   }
 
+  // Check if the coverage answer has service providers
+  this.hasServiceProviders = function() {
+    if (!this.hasInsurance()) return null;
+    return (this.json['insurance']['service_providers'] && this.json['insurance']['service_providers']['physicians'] &&
+      this.json['insurance']['service_providers']['physicians'].length > 0)
+  }
+
+  // Return the service providers for the coverage answer
+  this.getServiceProviders = function() {
+    if (!this.hasServiceProviders()) return null;
+    return (this.json['insurance']['service_providers']['physicians']);
+  }
+
   // Check if the coverage answer has insurance information
   this.hasInsurance = function () {
     return(this.json['insurance'] && this.json['insurance']['name']);
@@ -352,7 +365,11 @@ function Coverage(json) {
     var contacts = new Array();
 
     $.each(contactData, function (index, contact) {
-      contacts.push(that.capitalise(contact.contact_type) + ": " + contact.contact_value);
+      if (that.isPresent(contact.contact_type)) {
+        contacts.push(that.capitalise(contact.contact_type) + ": " + contact.contact_value);
+      } else {
+        contacts.push(contact.contact_value);
+      }
     });
 
     return contacts;
@@ -521,7 +538,10 @@ function Coverage(json) {
 
   // Capitalize a string
   this.capitalise = function (string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if (this.isPresent(string))
+      return(string.charAt(0).toUpperCase() + string.slice(1));
+    else
+      return("");
   };
 }
 
@@ -583,6 +603,16 @@ function CoveragePlugin(coverage, coverageSection) {
       container.append(
         that.buildPanelUI('Plan',
           that.getInsuranceSection3()));
+    }
+  }
+
+  // Add insurance section part 4
+  this.addInsuranceSection4 = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasServiceProviders()) {
+      container.append(
+        that.buildPanelUI('Providers',
+        that.getInsuranceSection4()));
     }
   }
 
@@ -738,6 +768,11 @@ function CoveragePlugin(coverage, coverageSection) {
   // Gets the insurance section part 3
   this.getInsuranceSection3 = function () {
     return(that.buildInsuranceSection3(that.coverage.getPlan(), that.coverage.getSubscriber()));
+  }
+
+  // Gets the insurance section part 4
+  this.getInsuranceSection4 = function () {
+    return(that.buildInsuranceSection4(that.coverage.getServiceProviders()));
   }
 
   // Gets the plan maximum, minimum and deductibles table
@@ -1118,6 +1153,71 @@ function CoveragePlugin(coverage, coverageSection) {
 
     $("<th/>", {text: "Subscriber Info"}).appendTo(rowHead);
     $("<td/>", {html: that.coverage.parseSubscriberInfo(subscriber).join("<br/>")}).appendTo(row);
+
+    return(table);
+  }
+
+  // Build Insurance Section part 4
+  this.buildInsuranceSection4 = function (physicians) {
+    var table = $("<table class=\"table table-hover\"/>");
+    var tableHead = $("<thead></thead>").appendTo(table);
+    var rowHead = $("<tr></tr>").appendTo(tableHead);
+    var tableBody = $("<tbody/>").appendTo(table);
+
+    $("<th/>", {text: "Type"}).appendTo(rowHead);
+    $("<th/>", {text: "Primary Care"}).appendTo(rowHead);
+    $("<th/>", {text: "Restricted"}).appendTo(rowHead);
+    $("<th/>", {text: "Contacts"}).appendTo(rowHead);
+    $("<th/>", {text: "Dates"}).appendTo(rowHead);
+    $("<th/>", {text: "Additional Information"}).appendTo(rowHead);
+
+    $.each(physicians, function(index, physician) {
+      var eligibilityCodeLabel = physician['eligibility_code_label'];
+      var insuranceTypeLabel = physician['insurance_type_label'];
+      var primaryCare = physician['primary_care'];
+      var restricted = physician['restricted'];
+      var dates = physician['dates'];
+      var comments = that.coverage.parseComments(physician['comments']);
+
+      var row = $("<tr></tr>").appendTo(tableBody);
+
+      var groupProvider = '';
+      if (that.coverage.isPresent(eligibilityCodeLabel) && that.coverage.isPresent(insuranceTypeLabel)) {
+        groupProvider = eligibilityCodeLabel + " - " + insuranceTypeLabel;
+      } else if (that.coverage.isPresent(eligibilityCodeLabel)) {
+        groupProvider = eligibilityCodeLabel;
+      } else {
+        groupProvider = insuranceTypeLabel;
+      }
+
+      if (physician['contact_details'] && physician['contact_details'].length > 0) {
+        $.each(physician['contact_details'], function(idx, contact_detail) {
+          var identificationType = contact_detail['identification_type'];
+          var contacts = that.coverage.parseContacts(contact_detail['contacts']);
+          var address = that.coverage.parseAddress(contact_detail['address']);
+
+          var contactData = new Array();
+          contactData.push(that.coverage.parseName(contact_detail));
+          contactData.push(identificationType);
+          contactData.push(contacts);
+          contactData.push(address);
+
+          $("<td/>", {text: groupProvider}).appendTo(row);
+          $("<td/>", {text: (primaryCare == true ? 'Yes' : 'No')}).appendTo(row);
+          $("<td/>", {text: (restricted == true ? 'Yes' : 'No')}).appendTo(row);
+          $("<td/>", {html: contactData.join("<br/>")}).appendTo(row);
+          $("<td/>", {html: that.coverage.parseDates(dates).join("<br/>")}).appendTo(row);
+          $("<td/>", {html: comments.join("<br/>")}).appendTo(row);
+        });
+      } else {
+        $("<td/>", {text: groupProvider}).appendTo(row);
+        $("<td/>", {text: (primaryCare == true ? 'Yes' : 'No')}).appendTo(row);
+        $("<td/>", {text: (restricted == true ? 'Yes' : 'No')}).appendTo(row);
+        $("<td/>", {html: ""}).appendTo(row);
+        $("<td/>", {html: that.coverage.parseDates(dates).join("<br/>")}).appendTo(row);
+        $("<td/>", {html: comments.join("<br/>")}).appendTo(row);
+      }
+    });
 
     return(table);
   }

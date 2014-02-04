@@ -136,6 +136,7 @@ buildCoverageHTML = function(coverage) {
   plugin.addInsuranceSection1(insuranceSection);
   plugin.addInsuranceSection2(insuranceSection);
   plugin.addInsuranceSection3(insuranceSection);
+  plugin.addInsuranceSection4(insuranceSection);
   plugin.addPlanMaximumMinimumDeductibles();
   plugin.addPlanCoinsurance();
   plugin.addPlanCopayment();

@@ -136,6 +136,7 @@ buildCoverageHTML = function (coverage) {
   plugin.addInsuranceSection1(insuranceSection);
   plugin.addInsuranceSection2(insuranceSection);
   plugin.addInsuranceSection3(insuranceSection);
+  plugin.addInsuranceSection4(insuranceSection);
 
   // We build a bootstrap tab to display the services and plan financial all together
   var financials = $("<ul/>").addClass("nav nav-tabs");
