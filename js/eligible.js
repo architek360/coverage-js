@@ -301,6 +301,30 @@ function Coverage(json) {
     return(hasNonCovered);
   }
 
+  // Check if a json element has limitations information
+  this.hasLimitations = function(limitations) {
+    return(limitations && limitations['amounts'] && limitations['amounts'].length > 0)
+  }
+
+  // Check if the plan has limitations information
+  this.hasPlanLimitations = function() {
+    if (!this.hasPlanFinancials()) return false;
+    return(this.hasLimitations(json['plan']['financials']['limitations']));
+  }
+
+  // Check if the services has limitations information
+  this.hasServicesLimitations = function() {
+    if (!this.hasServices()) return false;
+    var hasLimitations = false;
+    $.each(this.json['services'], function(idx, item) {
+      if (item['financials'] && that.hasNonCovered(item['financials']['limitations'])) {
+        hasLimitations = true;
+        return false;
+      }
+    });
+    return(hasLimitations);
+  }
+
   // Return the additional insurance policies for the plan
   this.getAdditionalInsurancePolicies = function () {
     if (!this.hasAdditionalInsurancePolicies()) return null;
@@ -490,7 +514,7 @@ function Coverage(json) {
   // Check the keys in info, if its amount, it returns the money amount, if it has the key percent, it returns the
   // percent format
   this.parseFinancialAmount = function (info) {
-    var amount = null;
+    var amount = '';
     if (info['amount'])
       amount = this.parseAmount(info['amount']);
     else if (info['percent'])
@@ -733,6 +757,16 @@ function CoveragePlugin(coverage, coverageSection) {
       container.append(
         that.buildPanelUI('Non Covered',
           that.getNonCovered()));
+    }
+  }
+
+  // Add limitations information
+  this.addLimitations = function (container) {
+    container = container || this.coverageSection;
+    if (that.coverage.hasPlanLimitations() || that.coverage.hasServicesLimitations()) {
+      container.append(
+        that.buildPanelUI('Limitations',
+          that.getLimitations()));
     }
   }
 
@@ -998,6 +1032,11 @@ function CoveragePlugin(coverage, coverageSection) {
   // Gets the non covered table
   this.getNonCovered = function() {
     return(that.buildNonCovered(that.coverage.getPlan(), that.coverage.getServices()));
+  }
+
+  // Gets the limitations table
+  this.getLimitations = function() {
+    return(that.buildLimitations(that.coverage.getPlan(), that.coverage.getServices()));
   }
 
   // Gets all the services with generic table format
@@ -1296,6 +1335,57 @@ function CoveragePlugin(coverage, coverageSection) {
       $.each(services, function(i, item) {
         if (that.coverage.hasNonCovered(item['noncovered']))
           $.each(item['noncovered'], parseNonCovered);
+      });
+    }
+
+    return(table);
+  }
+
+  // Build Limitations
+  this.buildLimitations = function(plan, services) {
+    var table = $("<table class=\"table table-hover\"/>");
+    var tableHead = $("<thead></thead>").appendTo(table);
+    var rowHead = $("<tr></tr>").appendTo(tableHead);
+    var tableBody = $("<tbody/>").appendTo(table);
+
+    $("<th/>", {text: "Service"}).appendTo(rowHead);
+    $("<th/>", {text: "Network"}).appendTo(rowHead);
+    $("<th/>", {text: "Coverage"}).appendTo(rowHead);
+    $("<th/>", {text: "Amount"}).appendTo(rowHead);
+    $("<th/>", {text: "Time Period"}).appendTo(rowHead);
+    $("<th/>", {text: "POS"}).appendTo(rowHead);
+    $("<th/>", {text: "Authorization Required"}).appendTo(rowHead);
+    $("<th/>", {text: "Contact"}).appendTo(rowHead);
+    $("<th/>", {text: "Dates"}).appendTo(rowHead);
+    $("<th/>", {text: "Additional Information"}).appendTo(rowHead);
+
+    var parseLimitations = function(idx, limitations, label) {
+      var row = $("<tr/>").appendTo(tableBody);
+
+      $("<td/>", {text: label}).appendTo(row);
+      $("<td/>", {text: limitations['level']}).appendTo(row);
+      $("<td/>", {text: limitations['network']}).appendTo(row);
+      $("<td/>", {text: that.coverage.parseFinancialAmount(limitations)}).appendTo(row);
+      $("<td/>", {text: limitations['time_period_label'] || ''}).appendTo(row);
+      $("<td/>", {text: limitations['pos_label'] || ''}).appendTo(row);
+      $("<td/>", {text: ((limitations['authorization_required']) ? 'Yes' : 'No')}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseContactDetails(limitations['contact_details']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseDates(limitations['dates']).join("<br/>")}).appendTo(row);
+      $("<td/>", {html: that.coverage.parseComments(limitations['comments']).join("<br/>")}).appendTo(row);
+    }
+
+    if (that.coverage.hasPlanLimitations()) {
+      $.each(plan['financials']['limitations']['amounts'], function(idx, limitations) {
+        parseLimitations(idx, limitations, 'Plan');
+      });
+    }
+    if (that.coverage.hasServicesLimitations()) {
+      $.each(services, function(i, item) {
+        if (item['financials'] && that.coverage.hasLimitations(item['financials']['limitations'])) {
+          $.each(item['financials']['limitations']['amounts'], function(idx, limitations) {
+            parseLimitations(idx, limitations, item['type_label']);
+          });
+        }
       });
     }
 
@@ -2330,7 +2420,6 @@ function CoveragePlugin(coverage, coverageSection) {
 
     return(row);
   };
-
 }
 
 

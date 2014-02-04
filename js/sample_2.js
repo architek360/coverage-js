@@ -144,6 +144,7 @@ buildCoverageHTML = function(coverage) {
   plugin.addAdditionalInsurancePolicies();
   plugin.addNonCovered();
   plugin.addGenericServices();
+  plugin.addLimitations();
 
   var body = $('body');
   var subscriberSection = $("<section/>").addClass('subscriber-section');

@@ -174,6 +174,7 @@ buildCoverageHTML = function (coverage) {
 
   plugin.addPlanDisclaimer();
   plugin.addNonCovered();
+  plugin.addLimitations();
 
   var body = $('body');
   var subscriberSection = $("<section/>").addClass('subscriber-section');
