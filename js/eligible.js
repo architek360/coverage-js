@@ -1192,11 +1192,13 @@ function CoveragePlugin(coverage, coverageSection) {
 
       if (physician['contact_details'] && physician['contact_details'].length > 0) {
         $.each(physician['contact_details'], function(idx, contact_detail) {
+          var entityCodeLabel = contact_detail['entity_code_label'];
           var identificationType = contact_detail['identification_type'];
           var contacts = that.coverage.parseContacts(contact_detail['contacts']);
           var address = that.coverage.parseAddress(contact_detail['address']);
 
           var contactData = new Array();
+          contactData.push(entityCodeLabel);
           contactData.push(that.coverage.parseName(contact_detail));
           contactData.push(identificationType);
           contactData.push(contacts);
